@@ -1,12 +1,10 @@
 
 'use client';
-// This page is now redundant as the main page handles dish listing.
-// We can redirect or show a simplified version. For now, let's redirect.
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSearchParams } from 'next/navigation';
 
-export default function DishesRedirectPage() {
+import { useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+
+function DishesRedirectContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -19,5 +17,13 @@ export default function DishesRedirectPage() {
         <div className="container mx-auto py-12 text-center">
             <p>Redirecting to the main page...</p>
         </div>
+    );
+}
+
+export default function DishesRedirectPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <DishesRedirectContent />
+        </Suspense>
     );
 }

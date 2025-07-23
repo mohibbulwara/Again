@@ -172,3 +172,6 @@ export async function incrementDishViewCount(dishId: string) {
     console.error("Failed to increment dish view count for dish " + dishId, error);
   }
 }
+
+// Assuming incrementProductViewCount was a typo and should be incrementDishViewCount
+export { incrementDishViewCount };

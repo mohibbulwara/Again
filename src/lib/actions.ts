@@ -173,5 +173,4 @@ export async function incrementDishViewCount(dishId: string) {
   }
 }
 
-// Assuming incrementProductViewCount was a typo and should be incrementDishViewCount
-export { incrementDishViewCount };
+

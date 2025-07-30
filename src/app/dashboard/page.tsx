@@ -368,20 +368,12 @@ export default function DashboardPage() {
                                     const isAvailable = dish.isAvailable ?? true;
                                     return (
                                     <TableRow key={dish.id}>
-                                        <TableCell className="hidden sm:table-cell">
-                                            <Image
-                                                alt={dish.name}
-                                                className="aspect-square rounded-md object-cover"
-                                                height="64"
-                                                src={dish.images[0]}
-                                                width="64"
-                                                data-ai-hint={dish.category}
-                                            />
-                                        </TableCell>
                                         <TableCell className="font-medium">
-                                            {dish.name}
-                                            <div className="md:hidden text-muted-foreground">৳{dish.price.toFixed(2)}</div>
-                                            <div className="md:hidden text-muted-foreground text-xs">Views: {dish.viewCount || 0}</div>
+                                            <div> {/* Added a parent div here */}
+                                                {dish.name}
+                                                <div className="md:hidden text-muted-foreground">৳{dish.price.toFixed(2)}</div>
+                                                <div className="md:hidden text-muted-foreground text-xs">Views: {dish.viewCount || 0}</div>
+                                            </div> {/* Closed the parent div here */}
                                         </TableCell>
                                         <TableCell>
                                             <div className="flex items-center space-x-2">

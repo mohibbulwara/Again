@@ -230,30 +230,28 @@ export default function DashboardPage() {
     }
   };
   
-  // Commented out conditional return for loading/user role
-  // if (loading || !user || user.role !== 'seller') {
-  //     return <div className="container py-12 text-center">Loading or redirecting...</div>;
-  // }
+  if (loading || !user || user.role !== 'seller') {
+      return <div className="container py-12 text-center">Loading or redirecting...</div>;
+  }
 
-  // Commented out conditional return for suspended user
-  // if (user.isSuspended) {
-  //     return (
-  //       <div className="container mx-auto py-12">
-  //           <Card className="max-w-2xl mx-auto text-center border-destructive">
-  //               <CardHeader>
-  //                   <CardTitle className="font-headline text-2xl text-destructive">Account Suspended</CardTitle>
-  //                   <CardDescription>Your account has been temporarily suspended.</CardDescription>
-  //               </CardHeader>
-  //               <CardContent>
-  //                   <p className="mb-4">You have successfully completed 100 orders. To continue selling on our platform, a monthly fee of 500 taka is required. Please contact admin to make the payment and re-activate your account.</p>
-  //                    <Button asChild variant="outline">
-  //                       <Link href="/contact">Contact Admin</Link>
-  //                    </Button>
-  //               </CardContent>
-  //           </Card>
-  //       </div>
-  //     )
-  // }
+  if (user.isSuspended) {
+      return (
+        <div className="container mx-auto py-12">
+            <Card className="max-w-2xl mx-auto text-center border-destructive">
+                <CardHeader>
+                    <CardTitle className="font-headline text-2xl text-destructive">Account Suspended</CardTitle>
+                    <CardDescription>Your account has been temporarily suspended.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <p className="mb-4">You have successfully completed 100 orders. To continue selling on our platform, a monthly fee of 500 taka is required. Please contact admin to make the payment and re-activate your account.</p>
+                     <Button asChild variant="outline">
+                        <Link href="/contact">Contact Admin</Link>
+                     </Button>
+                </CardContent>
+            </Card>
+        </div>
+      )
+  }
 
   const OrderStatusIcon = ({ status }: { status: Order['status'] }) => {
     switch (status) {
@@ -279,6 +277,8 @@ export default function DashboardPage() {
             </Button>
        </div>
        
+        {/* Commented out Tabs component and its content */}
+        {/*
         <Tabs defaultValue="overview">
             <TabsList className="mb-4">
                 <TabsTrigger value="overview">Overview</TabsTrigger>

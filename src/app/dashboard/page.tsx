@@ -278,7 +278,7 @@ export default function DashboardPage() {
        </div>
        
         {/* Commented out Tabs component and its content */}
-        {/*
+        /*
         <Tabs defaultValue="overview">
             <TabsList className="mb-4">
                 <TabsTrigger value="overview">Overview</TabsTrigger>

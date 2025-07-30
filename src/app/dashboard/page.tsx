@@ -47,6 +47,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger, // Added AlertDialogTrigger here
 } from "@/components/ui/alert-dialog";
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
@@ -398,7 +399,7 @@ export default function DashboardPage() {
                                             <div className="flex items-center gap-1">
                                                 <Eye className="h-4 w-4" />
                                                 {dish.viewCount || 0}
-                                            </div>
+                                            </TableCell>
                                         </TableCell>
                                         <TableCell className="hidden md:table-cell">৳{dish.price.toFixed(2)}</TableCell>
                                         <TableCell>

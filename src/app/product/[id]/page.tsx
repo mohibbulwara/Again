@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { getProductById, getProducts } from '@/lib/services/product-service';
 import { getUserById } from '@/lib/services/user-service';
-import { incrementProductViewCount } from '@/lib/actions';
+import { incrementDishViewCount } from '@/lib/actions';
 import { Skeleton } from '@/components/ui/skeleton';
 import ProductDetailClient from './product-detail-client';
 
@@ -32,7 +32,7 @@ const ProductDetailSkeleton = () => (
 
 async function ProductDetailData({ id }: { id: string }) {
     // Increment view count. We don't need to wait for it.
-    incrementProductViewCount(id);
+    incrementDishViewCount(id);
 
     const product = await getProductById(id);
     

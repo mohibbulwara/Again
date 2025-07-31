@@ -21,7 +21,8 @@ import {
   Sandwich,
   Coffee,
   IceCream,
-  Popcorn
+  Popcorn,
+  Grid as GridIcon // Renamed LayoutGrid import to avoid conflict
 } from 'lucide-react';
 import type { ComponentType } from 'react';
 
@@ -80,7 +81,8 @@ export default function CategoryShowcase({ categories, onSelectCategory, selecte
     <section className="bg-secondary/30 py-8 md:py-12">
       <div className="container mx-auto">
         <div className="text-center mb-12">
-            <h2 className="font-headline text-3xl font-extrabold md:text-5xl text-foreground pb-2">
+            <h2 className="font-headline text-3xl font-extrabold md:text-5xl bg-gradient-to-r from-primary to-blue-400 text-transparent bg-clip-text pb-2 inline-block">
+               <GridIcon className="h-6 w-6 md:h-8 md:w-8 text-primary inline-block mr-4 mb-2" />
               Shop By Category
             </h2>
             <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">Click on a category to explore delicious options from our best kitchens.</p>

@@ -35,7 +35,7 @@ export default function FeaturedSellers({ sellers }: FeaturedSellersProps) {
       <div className="container mx-auto">
         <div className="text-center mb-12">
             <div className="inline-block relative">
-              <h2 className="font-headline text-3xl font-extrabold md:text-5xl text-shadow-lg text-foreground pb-2">
+              <h2 className="font-headline text-3xl font-extrabold md:text-5xl bg-gradient-to-r from-primary to-blue-400 text-transparent bg-clip-text pb-2 inline-block">
                 <ChefHat className="h-6 w-6 md:h-8 md:w-8 text-primary inline-block mr-4 mb-2" />
                   Our Top Kitchens
                 <ChefHat className="h-6 w-6 md:h-8 md:w-8 text-primary inline-block ml-4 mb-2" />

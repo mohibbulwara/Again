@@ -4,7 +4,6 @@
 import { useState, useMemo, useEffect, Suspense } from 'react';
 import type { Dish, User } from '@/types';
 import DishCard from './dish-card';
-import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingBag, SlidersHorizontal } from 'lucide-react';
 import DishFilters from './dish-filters';
 import { useSearchParams } from 'next/navigation';
@@ -123,27 +122,18 @@ function AllDishesContent({ dishes, selectedCategory }: AllDishesProps) {
             <aside className="hidden md:block md:col-span-1">
                 <div className="sticky top-24 space-y-8">
                     <DishFilters />
-                    <AnimatePresence>
                     {categorySellers.length > 0 && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 20 }}
-                            transition={{ duration: 0.3 }}
-                        >
-                            <Card className="p-4">
-                                <h2 className="font-headline text-xl font-bold mb-4 text-primary">
-                                    {category} Sellers
-                                </h2>
-                                <div className="space-y-4">
-                                    {categorySellers.map(seller => (
-                                        <SellerCard key={seller.id} seller={seller} />
-                                    ))}
-                                </div>
-                            </Card>
-                        </motion.div>
+                        <Card className="p-4">
+                            <h2 className="font-headline text-xl font-bold mb-4 text-primary">
+                                {category} Sellers
+                            </h2>
+                            <div className="space-y-4">
+                                {categorySellers.map(seller => (
+                                    <SellerCard key={seller.id} seller={seller} />
+                                ))}
+                            </div>
+                        </Card>
                     )}
-                    </AnimatePresence>
                 </div>
             </aside>
 
@@ -175,32 +165,17 @@ function AllDishesContent({ dishes, selectedCategory }: AllDishesProps) {
 
             {/* Dish Grid */}
             <main className="md:col-span-3">
-                <motion.div layout className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                <AnimatePresence>
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
                     {paginatedDishes.length > 0 ? (
-                    paginatedDishes.map((dish, index) => (
-                        <motion.div
-                        key={dish.id}
-                        layout
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.8 }}
-                        transition={{ type: 'spring', stiffness: 260, damping: 20, delay: index * 0.05 }}
-                        >
-                        <DishCard dish={dish} />
-                        </motion.div>
+                    paginatedDishes.map((dish) => (
+                        <DishCard key={dish.id} dish={dish} />
                     ))
                     ) : (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="col-span-full text-center py-20"
-                    >
+                    <div className="col-span-full text-center py-20">
                         <p className="text-lg text-muted-foreground">No dishes found. Try adjusting your filters.</p>
-                    </motion.div>
+                    </div>
                     )}
-                </AnimatePresence>
-                </motion.div>
+                </div>
 
                  {totalPages > 1 && (
                     <div className="flex items-center justify-center pt-12">

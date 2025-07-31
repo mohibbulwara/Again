@@ -14,29 +14,30 @@ import AllDishes from '@/components/all-dishes';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { Dish, User } from '@/types';
 import CategorySellers from '@/components/category-sellers';
+import ModernLoading, { DishCardSkeleton } from '@/components/modern-loading';
+import { useScrollAnimation } from '@/hooks/use-scroll-animation';
 
 
 const AllDishesSkeleton = () => (
     <div className="container mx-auto py-16 md:py-24">
         <div className="text-center mb-12">
-            <Skeleton className="h-12 w-3/4 mx-auto" />
-            <Skeleton className="h-6 w-1/2 mx-auto mt-4" />
+            <div className="flex flex-col items-center space-y-4">
+                <ModernLoading variant="spinner" size="lg" text="Loading delicious dishes..." />
+                <div className="space-y-2">
+                    <Skeleton className="h-12 w-3/4 mx-auto shimmer" />
+                    <Skeleton className="h-6 w-1/2 mx-auto shimmer" />
+                </div>
+            </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="hidden md:block md:col-span-1 space-y-8">
-                <Skeleton className="h-24 w-full" />
-                <Skeleton className="h-32 w-full" />
-                <Skeleton className="h-64 w-full" />
+                <Skeleton className="h-24 w-full rounded-xl shimmer" />
+                <Skeleton className="h-32 w-full rounded-xl shimmer" />
+                <Skeleton className="h-64 w-full rounded-xl shimmer" />
             </div>
             <div className="md:col-span-3 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                 {[...Array(6)].map((_, i) => (
-                    <div key={i} className="flex flex-col space-y-3">
-                        <Skeleton className="h-[200px] w-full rounded-xl" />
-                        <div className="space-y-2">
-                            <Skeleton className="h-4 w-full" />
-                            <Skeleton className="h-4 w-2/3" />
-                        </div>
-                    </div>
+                    <DishCardSkeleton key={i} />
                 ))}
             </div>
         </div>
@@ -49,6 +50,11 @@ export default function HomePage() {
   const [allSellers, setAllSellers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const { ref: pageRef, isVisible: pageVisible } = useScrollAnimation();
+
+  const handleCategorySelect = (category: string | null) => {
+    setSelectedCategory(category);
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -73,21 +79,46 @@ export default function HomePage() {
     .slice(0, 3);
   
   return (
-    <div className="flex flex-col">
+    <div ref={pageRef} className={`flex flex-col transition-all duration-1000 ${pageVisible ? 'animate-on-scroll in-view' : 'animate-on-scroll'}`}>
       <HeroSection />
+      
       <Suspense fallback={<AllDishesSkeleton />}>
-        <AllDishes dishes={allDishesData} />
+        <div className="animate-on-scroll">
+          <AllDishes
+            dishes={allDishesData}
+            selectedCategory={selectedCategory}
+          />
+        </div>
       </Suspense>
-      <CategoryShowcase categories={categories} onSelectCategory={setSelectedCategory} />
-      <CategorySellers 
-         key={selectedCategory} // Force re-render on category change
-         category={selectedCategory} 
-         allSellers={allSellers} 
-         allDishes={allDishesData} 
-       />
-      <FeaturedSellers sellers={featuredSellers} />
-      <Testimonials />
-      <SubscriptionSection />
+      
+      <div className="animate-on-scroll">
+        <CategoryShowcase
+          categories={categories}
+          onSelectCategory={handleCategorySelect}
+          selectedCategory={selectedCategory}
+        />
+      </div>
+      
+      <div className="animate-on-scroll">
+        <CategorySellers
+           key={selectedCategory} // Force re-render on category change
+           category={selectedCategory}
+           allSellers={allSellers}
+           allDishes={allDishesData}
+         />
+      </div>
+      
+      <div className="animate-on-scroll">
+        <FeaturedSellers sellers={featuredSellers} />
+      </div>
+      
+      <div className="animate-on-scroll">
+        <Testimonials />
+      </div>
+      
+      <div className="animate-on-scroll">
+        <SubscriptionSection />
+      </div>
     </div>
   );
 }

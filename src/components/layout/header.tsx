@@ -39,7 +39,8 @@ export default function Header() {
   const navLinks = [
     { href: '/', label: t('home') },
     { href: '/sellers', label: 'Sellers' },
-    { href: '/myorders', label: 'My Orders' },  
+    { href: '/dishes', label: 'All Dishes' },
+    ...(isAuthenticated && user?.role === 'buyer' ? [{ href: '/myorders', label: 'My Orders' }] : []),
   ];
 
   useEffect(() => {
@@ -94,12 +95,12 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/80 backdrop-blur-lg">
+    <header className="sticky top-0 z-40 w-full border-b border-border/40 glass-effect backdrop-blur-xl shadow-lg">
       <div className="container flex h-16 items-center">
         <div className="mr-auto">
-          <Link href="/" className="flex items-center space-x-2">
-            <CookingPot className="h-8 w-8 text-primary" />
-            <span className="font-bold font-headline text-xl tracking-wide">{t('appName')}</span>
+          <Link href="/" className="flex items-center space-x-2 group">
+            <CookingPot className="h-8 w-8 text-primary transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" />
+            <span className="font-bold font-headline text-xl tracking-wide bg-gradient-to-r from-primary to-pink-500 text-transparent bg-clip-text">{t('appName')}</span>
           </Link>
         </div>
 
@@ -111,8 +112,8 @@ export default function Header() {
       <Link
         key={link.href}
         href={link.href}
-        className={`relative rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-primary ${
-          isActive ? 'text-primary bg-muted' : 'text-muted-foreground'
+        className={`relative rounded-md px-3 py-2 text-sm font-medium transition-all duration-300 hover:text-primary modern-button ${
+          isActive ? 'text-primary glass-effect' : 'text-muted-foreground hover:bg-primary/10'
         }`}
       >
         {link.label}
@@ -120,15 +121,20 @@ export default function Header() {
     );
   })}
 
-  {/* ✅ Show Dashboard only for Sellers */}
+  {/* Dashboard link for sellers - only show in desktop nav */}
   {user?.role === 'seller' && (
     <Link
       href="/dashboard"
-      className={`relative rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-primary ${
-        pathname === '/dashboard' ? 'text-primary bg-muted' : 'text-muted-foreground'
+      className={`relative rounded-md px-3 py-2 text-sm font-medium transition-all duration-300 hover:text-primary modern-button ${
+        pathname.startsWith('/dashboard') ? 'text-primary glass-effect' : 'text-muted-foreground hover:bg-primary/10'
       }`}
     >
-      Dashboard
+      <div className="flex items-center gap-2">
+        <span>Dashboard</span>
+        {pathname.startsWith('/dashboard') && (
+          <div className="h-2 w-2 bg-primary rounded-full animate-pulse" />
+        )}
+      </div>
     </Link>
   )}
 </nav>
@@ -139,10 +145,10 @@ export default function Header() {
           {isAuthenticated && user && (
             <Popover>
               <PopoverTrigger asChild>
-                  <Button variant="ghost" size="icon" className="relative rounded-full p-2 transition-colors hover:bg-accent">
+                  <Button variant="ghost" size="icon" className="relative rounded-full p-2 transition-all duration-300 hover:bg-accent modern-button hover:scale-110">
                       <Bell className="h-5 w-5" />
                       {unreadCount > 0 && (
-                           <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 justify-center rounded-full p-0 text-xs border-2 border-background">
+                           <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 justify-center rounded-full p-0 text-xs border-2 border-background pulse-glow">
                               {unreadCount}
                            </Badge>
                       )}
@@ -174,7 +180,7 @@ export default function Header() {
 
           <Popover open={isSearchOpen} onOpenChange={setIsSearchOpen}>
             <PopoverTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative rounded-full p-2 transition-colors hover:bg-accent" title="Search">
+              <Button variant="ghost" size="icon" className="relative rounded-full p-2 transition-all duration-300 hover:bg-accent modern-button hover:scale-110" title="Search">
                 <Search className="h-5 w-5" />
                 <span className="sr-only">Search</span>
               </Button>
@@ -184,11 +190,11 @@ export default function Header() {
             </PopoverContent>
           </Popover>
 
-           <Button asChild variant="ghost" size="icon" className="relative rounded-full p-2 transition-colors hover:bg-accent">
+           <Button asChild variant="ghost" size="icon" className="relative rounded-full p-2 transition-all duration-300 hover:bg-accent modern-button hover:scale-110">
             <Link href="/cart">
               <ShoppingCart className="h-5 w-5" />
               {cartCount > 0 && (
-                <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 justify-center rounded-full p-0 text-xs border-2 border-background">
+                <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 justify-center rounded-full p-0 text-xs border-2 border-background pulse-glow">
                   {cartCount}
                 </Badge>
               )}
@@ -212,9 +218,9 @@ export default function Header() {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild><Link href="/profile" className="flex items-center gap-2"><UserIcon/>My Profile</Link></DropdownMenuItem>
-                {user.role === 'seller' && <DropdownMenuItem asChild><Link href="/dashboard" className="flex items-center gap-2"><Building/>Dashboard</Link></DropdownMenuItem>}
-                {user.role === 'admin' && <DropdownMenuItem asChild><Link href="/admin">Admin Panel</Link></DropdownMenuItem>}
+                <DropdownMenuItem asChild><Link href="/profile" className="flex items-center gap-2"><UserIcon className="h-4 w-4"/>My Profile</Link></DropdownMenuItem>
+                {user.role === 'seller' && <DropdownMenuItem asChild><Link href="/dashboard" className="flex items-center gap-2"><Building className="h-4 w-4"/>Seller Dashboard</Link></DropdownMenuItem>}
+                {user.role === 'admin' && <DropdownMenuItem asChild><Link href="/admin" className="flex items-center gap-2"><Building className="h-4 w-4"/>Admin Panel</Link></DropdownMenuItem>}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>{t('logout')}</DropdownMenuItem>
               </DropdownMenuContent>

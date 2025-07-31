@@ -103,3 +103,23 @@ export interface AdminLog {
   targetId?: string;
   timestamp: Timestamp | string;
 }
+
+export interface Product {
+  id: string;
+  name: string;
+  image: string;
+  description: string;
+  category: 'Burger' | 'Pizza' | 'Drinks' | 'Dessert' | 'Biryani' | 'Kebab' | 'Set Menu' | 'Pasta' | 'Soup' | 'Salad' | 'Curry' | 'Rice' | 'Noodles' | 'Seafood' | 'Vegetarian' | 'Sandwich' | 'Breakfast' | 'Appetizers' | 'Coffee' | 'Ice Cream';
+  rating: number;
+  price: number;
+  originalPrice?: number;
+  tags?: ('Best Value' | 'Spicy' | 'New')[];
+  sellerId: string;
+  deliveryTime: string;
+  commissionPercentage: number;
+  isAvailable?: boolean;
+  createdAt?: Date | Timestamp | string;
+  approvalStatus?: DishApprovalStatus;
+  approvalReason?: string;
+  viewCount?: number;
+}

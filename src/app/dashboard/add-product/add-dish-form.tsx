@@ -343,7 +343,7 @@ export default function AddDishForm() {
                   </div>
                   {discountPercentage > 0 && (
                      <div className="p-3 rounded-md bg-destructive/10 border border-destructive/20 text-destructive">
-                        <p className="font-medium">Discount Offer: <span className="font-bold text-lg">${discountPercentage}% OFF</span></p>
+                        <p className="font-medium">Discount Offer: <span className="font-bold text-lg">{discountPercentage}% OFF</span></p>
                         <p className="text-xs">Customers will see the original price struck through.</p>
                      </div>
                   )}
@@ -425,8 +425,8 @@ export default function AddDishForm() {
                     />
                      {sellerReceives > 0 && (
                         <div className="p-3 rounded-md bg-green-900/50 border border-green-500/50 text-green-300">
-                            <p className="font-medium">You will receive: <span className="font-bold">৳${sellerReceives.toFixed(2)}</span></p>
-                            <p className="text-xs">After ${watchedCommission}% commission.</p>
+                            <p className="font-medium">You will receive: <span className="font-bold">৳{sellerReceives.toFixed(2)}</span></p>
+                            <p className="text-xs">After {watchedCommission}% commission.</p>
                         </div>
                     )}
               </div>

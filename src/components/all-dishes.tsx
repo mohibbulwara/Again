@@ -17,20 +17,34 @@ import { Card } from './ui/card';
 
 interface AllDishesProps {
   dishes: Dish[];
+  selectedCategory?: string | null;
 }
 
 const ITEMS_PER_PAGE = 9;
 
-function AllDishesContent({ dishes }: AllDishesProps) {
+function AllDishesContent({ dishes, selectedCategory }: AllDishesProps) {
   const searchParams = useSearchParams();
 
-  // Local state for controlled components, initialized from URL
+  // Local state for controlled components, initialized from URL or props
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
-  const [category, setCategory] = useState(searchParams.get('category') || 'All');
+  const [category, setCategory] = useState(
+    selectedCategory || searchParams.get('category') || 'All'
+  );
   const [rating, setRating] = useState(Number(searchParams.get('rating')) || 0);
   const [sortBy, setSortBy] = useState(searchParams.get('sortBy') || 'rating-desc');
   const [currentPage, setCurrentPage] = useState(1);
   const [allSellers, setAllSellers] = useState<User[]>([]);
+
+  // Update category when selectedCategory prop changes
+  useEffect(() => {
+    if (selectedCategory !== undefined) {
+      const newCategory = selectedCategory || 'All';
+      if (newCategory !== category) {
+        setCategory(newCategory);
+        setCurrentPage(1);
+      }
+    }
+  }, [selectedCategory, category]);
 
   useEffect(() => {
     // This effect runs on the client to fetch all sellers
@@ -92,7 +106,7 @@ function AllDishesContent({ dishes }: AllDishesProps) {
   );
 
   return (
-    <section className="bg-background py-16 md:py-24">
+    <section id="dishes-section" className="bg-background py-16 md:py-24">
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <div className="inline-block relative">
@@ -222,10 +236,10 @@ function AllDishesContent({ dishes }: AllDishesProps) {
 }
 
 
-export default function AllDishes({ dishes }: AllDishesProps) {
+export default function AllDishes({ dishes, selectedCategory }: AllDishesProps) {
     return (
         <Suspense fallback={<div>Loading...</div>}>
-            <AllDishesContent dishes={dishes} />
+            <AllDishesContent dishes={dishes} selectedCategory={selectedCategory} />
         </Suspense>
     )
 }

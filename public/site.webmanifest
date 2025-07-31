@@ -1,0 +1,26 @@
+{
+  "name": "Chefs' BD - Authentic Flavors Delivered",
+  "short_name": "Chefs' BD",
+  "description": "Discover authentic flavors from local chefs, delivered fresh to your door",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#240a39",
+  "theme_color": "#ff6b9d",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["food", "lifestyle", "shopping"],
+  "lang": "en",
+  "dir": "ltr"
+}

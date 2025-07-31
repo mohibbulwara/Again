@@ -1,20 +1,58 @@
 
 import type { Metadata } from 'next';
 import './globals.css';
-import { Toaster } from '@/components/ui/toaster';
 import { AppProvider } from '@/contexts/app-provider';
-import Header from '@/components/layout/header';
-import Footer from '@/components/layout/footer';
 import { ptSans, spaceGrotesk } from '@/app/fonts';
 import { cn } from '@/lib/utils';
 import NextTopLoader from 'nextjs-toploader';
 import { ThemeProvider } from '@/components/theme-provider';
-import BottomNavbar from '@/components/layout/bottom-navbar';
+import ClientLayout from '@/components/client-layout';
 
 export const metadata: Metadata = {
-  title: "Chefs' BD",
-  description: 'Authentic flavors, delivered to your door.',
+  title: "Chefs' BD - Authentic Flavors Delivered",
+  description: 'Discover authentic flavors from local chefs, delivered fresh to your door. Experience culinary excellence with our curated selection of dishes.',
+  keywords: 'food delivery, authentic cuisine, local chefs, fresh meals, culinary experience',
+  authors: [{ name: "Chefs' BD Team" }],
+  creator: "Chefs' BD",
+  publisher: "Chefs' BD",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '32x32', type: 'image/x-icon' },
+      { url: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' },
+    ],
+    apple: [
+      { url: '/favicon.svg', sizes: '180x180', type: 'image/svg+xml' },
+    ],
+  },
+  manifest: '/site.webmanifest',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ff6b9d' },
+    { media: '(prefers-color-scheme: dark)', color: '#ff6b9d' },
+  ],
+};
+
 
 export default function RootLayout({
   children,
@@ -49,13 +87,7 @@ export default function RootLayout({
               speed={200}
               shadow="0 0 10px hsl(var(--primary)),0 0 5px hsl(var(--primary))"
             />
-            <div className="flex min-h-screen flex-col">
-              <Header />
-              <main className="flex-grow pb-20 md:pb-0">{children}</main>
-              <Footer />
-            </div>
-            <Toaster />
-            <BottomNavbar />
+            <ClientLayout>{children}</ClientLayout>
           </AppProvider>
         </ThemeProvider>
       </body>

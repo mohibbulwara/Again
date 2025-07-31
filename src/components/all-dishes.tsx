@@ -23,27 +23,26 @@ const ITEMS_PER_PAGE = 9;
 
 function AllDishesContent({ dishes, selectedCategory }: AllDishesProps) {
   const searchParams = useSearchParams();
-
-  // Local state for controlled components, initialized from URL or props
-  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
-  const [category, setCategory] = useState(
-    selectedCategory || searchParams.get('category') || 'All'
-  );
-  const [rating, setRating] = useState(Number(searchParams.get('rating')) || 0);
-  const [sortBy, setSortBy] = useState(searchParams.get('sortBy') || 'rating-desc');
-  const [currentPage, setCurrentPage] = useState(1);
   const [allSellers, setAllSellers] = useState<User[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Get filter values from URL parameters, with fallbacks
+  const searchTerm = searchParams.get('search') || '';
+  const category = selectedCategory || searchParams.get('category') || 'All';
+  const rating = Number(searchParams.get('rating')) || 0;
+  const sortBy = searchParams.get('sortBy') || 'rating-desc';
 
   // Update category when selectedCategory prop changes
   useEffect(() => {
     if (selectedCategory !== undefined) {
-      const newCategory = selectedCategory || 'All';
-      if (newCategory !== category) {
-        setCategory(newCategory);
-        setCurrentPage(1);
-      }
+      setCurrentPage(1);
     }
-  }, [selectedCategory, category]);
+  }, [selectedCategory]);
+
+  // Reset to page 1 when URL parameters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchParams]);
 
   useEffect(() => {
     // This effect runs on the client to fetch all sellers
@@ -93,10 +92,6 @@ function AllDishesContent({ dishes, selectedCategory }: AllDishesProps) {
     return allSellers.filter(seller => sellerIdsInCategory.has(seller.id));
   }, [filteredDishes, category, allSellers]);
 
-  // Reset to page 1 when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm, category, rating, sortBy]);
 
   const totalPages = Math.ceil(filteredDishes.length / ITEMS_PER_PAGE);
   const paginatedDishes = filteredDishes.slice(

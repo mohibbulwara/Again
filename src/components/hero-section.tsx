@@ -14,6 +14,19 @@ export default function HeroSection() {
       <div className="container mx-auto grid grid-cols-1 items-center py-20 md:py-32 text-center">
         <div className="relative">
           <div className="rounded-2xl p-8 md:p-12 mx-4 md:mx-8 border border-border shadow-lg bg-card">
+            {/* Savor the Taste of Tradition - Decorative Text */}
+            <div className="mb-6">
+              <div className="relative inline-block">
+                <h2 className="font-serif text-lg md:text-xl text-primary/80 italic tracking-wide mb-2">
+                  Savor the Taste of
+                </h2>
+                <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary bg-gradient-to-r from-primary via-orange-500 to-red-500 bg-clip-text text-transparent tracking-wider">
+                  TRADITION
+                </h2>
+                <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-primary/30 via-orange-400/50 to-red-400/30 rounded-full"></div>
+              </div>
+            </div>
+
             <h1 className="font-headline text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl text-foreground pb-4 leading-tight">
               {t('heroTitle')}
             </h1>

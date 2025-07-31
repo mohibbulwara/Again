@@ -73,7 +73,7 @@ export default function ProductFilters() {
                     <Input
                         id="search"
                         type="text"
-                        placeholder="Search dishes..."
+                        placeholder="Search products..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="pl-10"

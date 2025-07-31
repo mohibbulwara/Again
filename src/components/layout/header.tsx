@@ -39,6 +39,7 @@ export default function Header() {
   const navLinks = [
     { href: '/', label: t('home') },
     { href: '/sellers', label: 'Sellers' },
+    { href: '/myorders', label: 'My Orders' },  
   ];
 
   useEffect(() => {

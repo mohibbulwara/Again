@@ -32,7 +32,7 @@ export default function SubscriptionSection() {
 
   return (
     <motion.section
-      className="bg-background py-16 md:py-24"
+      className="bg-background py-8 md:py-12"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, amount: 0.2 }}

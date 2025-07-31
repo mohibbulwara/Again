@@ -26,7 +26,7 @@ export default function FeaturedSellers({ sellers }: FeaturedSellersProps) {
 
   return (
     <motion.section 
-      className="bg-secondary/30 py-16 md:py-24"
+      className="bg-secondary/30 py-8 md:py-12"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}

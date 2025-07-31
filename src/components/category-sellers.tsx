@@ -36,7 +36,7 @@ export default function CategorySellers({ category, allSellers, allDishes }: Cat
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
           transition={{ duration: 0.5, ease: 'easeInOut' }}
-          className="bg-background py-12"
+          className="bg-background py-8 md:py-10"
         >
           <div className="container mx-auto">
             <Card className="p-6 bg-secondary/30">

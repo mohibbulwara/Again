@@ -77,7 +77,7 @@ export default function CategoryShowcase({ categories, onSelectCategory, selecte
   }
 
   return (
-    <section className="bg-secondary/30 py-16 md:py-24">
+    <section className="bg-secondary/30 py-8 md:py-12">
       <div className="container mx-auto">
         <div className="text-center mb-12">
             <h2 className="font-headline text-3xl font-extrabold md:text-5xl text-foreground pb-2">

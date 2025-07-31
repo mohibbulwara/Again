@@ -100,26 +100,26 @@ function AllDishesContent({ dishes, selectedCategory }: AllDishesProps) {
   );
 
   return (
-    <section id="dishes-section" className="bg-background py-16 md:py-24">
+    <section id="dishes-section" className="bg-background py-6 md:py-8">
       <div className="container mx-auto">
-        <div className="text-center mb-12">
+        <div className="text-center mb-10">
           <div className="inline-block relative">
             <h2 className="font-headline text-3xl font-extrabold md:text-5xl bg-gradient-to-r from-primary to-blue-400 text-transparent bg-clip-text pb-2">
               <ShoppingBag className="h-6 w-6 md:h-8 md:w-8 text-primary inline-block mr-4 mb-2" />
               Explore Our Dishes
             </h2>
           </div>
-          <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">Find your next favorite meal from our curated collection.</p>
+          <p className="text-muted-foreground mt-2 max-w-xl mx-auto text-sm md:text-base">Find your next favorite meal from our curated collection.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {/* Desktop Filters */}
             <aside className="hidden md:block md:col-span-1">
-                <div className="sticky top-24 space-y-8">
+                <div className="sticky top-24 space-y-6">
                     <DishFilters />
                     {categorySellers.length > 0 && (
-                        <Card className="p-4">
-                            <h2 className="font-headline text-xl font-bold mb-4 text-primary">
+                        <Card className="p-4 rounded-xl">
+                            <h2 className="font-headline text-lg font-bold mb-4 text-primary">
                                 {category} Sellers
                             </h2>
                             <div className="space-y-4">
@@ -160,20 +160,20 @@ function AllDishesContent({ dishes, selectedCategory }: AllDishesProps) {
 
             {/* Dish Grid */}
             <main className="md:col-span-3">
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
                     {paginatedDishes.length > 0 ? (
                     paginatedDishes.map((dish) => (
                         <DishCard key={dish.id} dish={dish} />
                     ))
                     ) : (
-                    <div className="col-span-full text-center py-20">
+                    <div className="col-span-full text-center py-16">
                         <p className="text-lg text-muted-foreground">No dishes found. Try adjusting your filters.</p>
                     </div>
                     )}
                 </div>
 
                  {totalPages > 1 && (
-                    <div className="flex items-center justify-center pt-12">
+                    <div className="flex items-center justify-center pt-10">
                         <div className="flex items-center space-x-2">
                             <Button
                                 variant="outline"

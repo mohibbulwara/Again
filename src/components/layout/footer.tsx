@@ -28,7 +28,7 @@ export default function Footer() {
             <div>
                 <h4 className="font-semibold mb-4 text-foreground">Quick Links</h4>
                 <ul className="space-y-2">
-                    <li><Link href="/products" className="text-sm text-muted-foreground hover:text-primary">Dishes</Link></li>
+                    <li><Link href="/dishes" className="text-sm text-muted-foreground hover:text-primary">Dishes</Link></li>
                     <li><Link href="/cart" className="text-sm text-muted-foreground hover:text-primary">My Cart</Link></li>
                     <li><Link href="/register" className="text-sm text-muted-foreground hover:text-primary">Become a Seller</Link></li>
                 </ul>
@@ -49,8 +49,17 @@ export default function Footer() {
             </div>
         </div>
         <div className="mt-12 border-t pt-8 text-center text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} {t('appName')}. All rights reserved.
-        </div>
+  &copy; {new Date().getFullYear()} {t('appName')}. All rights reserved. <br />
+  Developed by <a 
+    href="https://www.facebook.com/mohibbulorjon/" 
+    target="_blank" 
+    rel="noopener noreferrer" 
+    className="hover:text-primary underline transition-colors"
+  >
+    ORJON
+  </a>
+</div>
+
       </div>
     </footer>
   );

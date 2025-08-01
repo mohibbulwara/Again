@@ -77,7 +77,11 @@ export default function OrdersTable({ initialOrders }: { initialOrders: Order[] 
                                 <TableRow key={order.id} className={isHighValue ? 'bg-destructive/10' : ''}>
                                     <TableCell>
                                         <div className="flex items-center gap-2">
-                                            {isHighValue && <AlertTriangle className="h-4 w-4 text-destructive" title="High-Value Order"/>}
+                                        {isHighValue && (
+  <span title="High-Value Order">
+    <AlertTriangle className="h-4 w-4 text-destructive" />
+  </span>
+)}
                                             <span className="font-medium">#{order.id?.substring(0, 6)}</span>
                                         </div>
                                     </TableCell>

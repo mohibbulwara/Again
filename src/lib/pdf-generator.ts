@@ -2,7 +2,7 @@
 'use client';
 
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 import { format } from 'date-fns';
 import type { User, Dish, Order } from '@/types';
 
@@ -17,16 +17,17 @@ const generatePdf = (title: string, head: any[], body: any[], filename: string) 
     doc.setFontSize(18);
     doc.text(title, 14, 22);
 
-    doc.autoTable({
+    autoTable(doc, {
         head,
         body,
         startY: 30,
         theme: 'grid',
-        headStyles: { fillColor: [34, 34, 34] }, // Dark grey for header
-    });
+        headStyles: { fillColor: [34, 34, 34] },
+      });
+      
     
     // Add footer with page number
-    const pageCount = doc.internal.getNumberOfPages();
+    const pageCount = (doc.internal as any).getNumberOfPages();
     for(let i = 1; i <= pageCount; i++) {
         doc.setPage(i);
         doc.setFontSize(10);

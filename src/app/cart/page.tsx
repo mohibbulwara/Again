@@ -125,7 +125,7 @@ export default function CartPage() {
 
       toast({ title: 'Order Placed!', description: 'Your order has been successfully placed.' });
       clearCart();
-      router.push('/orders');
+      router.push('/myorders');
 
     } catch (error) {
       console.error("Error placing order: ", error);

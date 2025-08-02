@@ -6,19 +6,18 @@ import Link from 'next/link';
 import type { Dish } from '@/types';
 import { useCart } from '@/lib/hooks';
 import { useLanguage } from '@/lib/hooks';
-import RatingStars from './rating-stars';
 
-import { ShoppingCart, Clock, BadgeAlert, Heart, Star } from 'lucide-react';
-import { Button } from './ui/button'; import { Card } from './ui/card';
+import { ShoppingCart, Clock, BadgeAlert } from 'lucide-react';
+import { Button } from './ui/button';
+import { Card } from './ui/card';
 import { Badge } from './ui/badge';
-import { useScrollAnimation } from '@/hooks/use-scroll-animation';
 import { useState } from 'react';
 
 interface DishCardProps {
   dish: Dish;
 }
 
-export default function DishCard({ dish }: DishCardProps) {
+export default function DishCard({ dish }: DishCardProps) { // Removed React.memo as it's not needed with simple props
   const { addToCart } = useCart();
   const { t } = useLanguage();
 
@@ -44,9 +43,7 @@ export default function DishCard({ dish }: DishCardProps) {
 
   return (
     <Card
-      className={`group relative overflow-hidden rounded-xl border-border/20 transition-all duration-500 h-full flex flex-col card-hover glass-effect backdrop-blur-sm hover:border-primary/50 hover:shadow-2xl `}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className="group relative overflow-hidden rounded-xl border-border/20 transition-all duration-300 h-full flex flex-col card-hover hover:border-primary/50 hover:shadow-xl" // Simplified className
     >
       <Link href={`/dish/${dish.id}`} className="block">
         <div className="overflow-hidden aspect-[4/3] relative">
@@ -55,25 +52,13 @@ export default function DishCard({ dish }: DishCardProps) {
             alt={dish.name}
             width={600}
             height={400}
-            className="h-full w-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:rotate-1"
+            className="h-full w-full object-cover transition-all duration-500 group-hover:scale-105" // Simplified animation
             data-ai-hint={`${dish.category}`}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-opacity duration-300 group-hover:from-black/40" />
           
-          {/* Shimmer Effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out" />
-          
-          {/* Floating Elements */}
-          {isHovered && (
-            <>
-              <div className="absolute top-4 left-4 animate-bounce">
-                <Star className="w-4 h-4 text-yellow-400 fill-current" />
-              </div>
-              <div className="absolute bottom-4 right-4 animate-pulse">
-                <div className="w-2 h-2 bg-primary rounded-full" />
-              </div>
-            </>
-          )}
+          {/* Shimmer Effect (simplified) */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
           
            {!isAvailable && (
             <div className="absolute inset-0 bg-black/50 flex items-center justify-center backdrop-blur-sm">
@@ -83,23 +68,8 @@ export default function DishCard({ dish }: DishCardProps) {
           {isDiscount && (
             <Badge variant="destructive" className="absolute top-3 right-3 text-sm font-bold shadow-lg pulse-glow animate-bounce">
  % OFF
-            </Badge>
-          )}
-          
-          {/* Like Button */}
-          <Button
-            size="icon"
-            variant="ghost"
-            className="absolute top-3 left-3 w-8 h-8 rounded-full glass-effect hover:bg-white/20 transition-all duration-300 opacity-0 group-hover:opacity-100"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setIsLiked(!isLiked);
-            }}
-          >
-            <Heart className={`w-4 h-4 transition-all duration-300 ${isLiked ? 'text-red-500 fill-current scale-110' : 'text-white'}`} />
-          </Button>
-        </div>
+            </Badge>)} {/* Moved closing Badge tag */}
+        </div> {/* Moved closing div tag */}
       </Link>
       <div className="p-5 space-y-4 flex flex-col flex-grow bg-gradient-to-b from-transparent to-background/50">
         <div className="flex-grow">
@@ -110,7 +80,7 @@ export default function DishCard({ dish }: DishCardProps) {
                   key={tag}
                   variant="secondary"
                   className="text-xs glass-effect hover:bg-primary/20 transition-all duration-300 hover:scale-105"
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  style={{ animationDelay: `${index * 50}ms` }} // Reduced animation delay
                 >
                   {tag}
                 </Badge>
@@ -131,11 +101,7 @@ export default function DishCard({ dish }: DishCardProps) {
         </div>
         
         <div className="flex items-center justify-between text-sm">
-          <div className="flex items-center space-x-2">
-            <RatingStars rating={dish.rating} />
-            <span className="text-xs text-muted-foreground font-medium">({dish.rating.toFixed(1)})</span>
-          </div>
-          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+          <div className="flex items-center gap-1 text-xs text-muted-foreground"> {/* Removed RatingStars div */}
              <Clock className="h-3 w-3" />
              <span className="font-medium">{dish.deliveryTime}</span>
           </div>
@@ -153,7 +119,7 @@ export default function DishCard({ dish }: DishCardProps) {
               )}
           </div>
            <Button
-              onClick={handleAddToCart}
+              onClick={handleAddToCart} // Added onClick handler
               size="sm"
               disabled={!isAvailable}
               className="modern-button transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"

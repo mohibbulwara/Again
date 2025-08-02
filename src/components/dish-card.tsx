@@ -7,10 +7,9 @@ import type { Dish } from '@/types';
 import { useCart } from '@/lib/hooks';
 import { useLanguage } from '@/lib/hooks';
 import RatingStars from './rating-stars';
-import { useToast } from '@/hooks/use-toast';
+
 import { ShoppingCart, Clock, BadgeAlert, Heart, Star } from 'lucide-react';
-import { Button } from './ui/button';
-import { Card } from './ui/card';
+import { Button } from './ui/button'; import { Card } from './ui/card';
 import { Badge } from './ui/badge';
 import { useScrollAnimation } from '@/hooks/use-scroll-animation';
 import { useState } from 'react';
@@ -22,8 +21,7 @@ interface DishCardProps {
 export default function DishCard({ dish }: DishCardProps) {
   const { addToCart } = useCart();
   const { t } = useLanguage();
-  const { toast } = useToast();
-  const { ref, isVisible } = useScrollAnimation();
+
   const [isLiked, setIsLiked] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -36,9 +34,7 @@ export default function DishCard({ dish }: DishCardProps) {
       image: dish.images?.[0] || 'https://placehold.co/600x400.png'
     };
     addToCart(product);
-    toast({
-      title: `${dish.name} added to cart!`,
-    });
+
   };
 
   const isAvailable = dish.isAvailable ?? true;
@@ -48,8 +44,7 @@ export default function DishCard({ dish }: DishCardProps) {
 
   return (
     <Card
-      ref={ref}
-      className={`group relative overflow-hidden rounded-xl border-border/20 transition-all duration-500 h-full flex flex-col card-hover glass-effect backdrop-blur-sm hover:border-primary/50 hover:shadow-2xl ${isVisible ? 'animate-on-scroll in-view' : 'animate-on-scroll'}`}
+      className={`group relative overflow-hidden rounded-xl border-border/20 transition-all duration-500 h-full flex flex-col card-hover glass-effect backdrop-blur-sm hover:border-primary/50 hover:shadow-2xl `}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -87,7 +82,7 @@ export default function DishCard({ dish }: DishCardProps) {
           )}
           {isDiscount && (
             <Badge variant="destructive" className="absolute top-3 right-3 text-sm font-bold shadow-lg pulse-glow animate-bounce">
-              {discountPercentage}% OFF
+ % OFF
             </Badge>
           )}
           
@@ -110,7 +105,7 @@ export default function DishCard({ dish }: DishCardProps) {
         <div className="flex-grow">
            {dish.tags && dish.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-3">
-              {dish.tags.map((tag, index) => (
+ {dish.tags.map((tag: string, index: number) => (
                 <Badge
                   key={tag}
                   variant="secondary"
@@ -163,14 +158,14 @@ export default function DishCard({ dish }: DishCardProps) {
               disabled={!isAvailable}
               className="modern-button transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isAvailable ? <>
+ {isAvailable ? <>
                   <ShoppingCart className="h-4 w-4" />
                   <span className="ml-2 text-xs font-medium">{t('addToCart')}</span>
-              </> : <>
+ </> : <>
                   <BadgeAlert className="h-4 w-4" />
                   <span className="ml-2 text-xs font-medium">Unavailable</span>
-              </>}
-          </Button>
+ </>}
+ </Button>
         </div>
       </div>
     </Card>

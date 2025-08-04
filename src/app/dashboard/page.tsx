@@ -141,9 +141,26 @@ export default function DashboardPage() {
   );
   
   const salesData = deliveredOrders.reduce((acc, order) => {
-    if (!order.createdAt) return acc;
-    const orderDate = new Date(order.createdAt as string); // Handle serialized string
-    const month = format(orderDate, 'MMM yyyy');
+    let orderDate: Date;
+    if (order.createdAt instanceof Date) {
+ orderDate = order.createdAt;
+    } else if (order.createdAt && typeof order.createdAt === 'object' && 'toDate' in order.createdAt) {
+      // Handle Firestore Timestamp
+ orderDate = (order.createdAt as any).toDate();
+    } else if (typeof order.createdAt === 'string') {
+      // Attempt to parse as a string
+ const parsedDate = new Date(order.createdAt);
+ if (!isNaN(parsedDate.getTime())) {
+ orderDate = parsedDate;
+      } else {
+ console.warn(`Skipping order ${order.id} due to unparsable createdAt string: ${order.createdAt}`);
+ return acc;
+      }
+    } else {
+ console.warn(`Skipping order ${order.id} due to invalid createdAt format:`, order.createdAt);
+      return acc;
+    }
+ const month = format(orderDate, 'MMM yyyy');
     const sellerItemsTotal = order.items.reduce((itemAcc, item) => itemAcc + item.price * item.quantity, 0);
 
     const existingMonth = acc.find(d => d.month === month);
@@ -173,10 +190,17 @@ export default function DashboardPage() {
     try {
         await runTransaction(db, async (transaction) => {
             const orderDoc = await transaction.get(orderRef);
+            let sellerDoc = null;
+
+            // Read seller doc only if we potentially need it (for Delivered status)
+            if (status === 'Delivered') {
+                 sellerDoc = await transaction.get(sellerRef);
+            }
+
             if (!orderDoc.exists() || orderDoc.data().status === status) {
                 return;
             }
-            
+
             transaction.update(orderRef, { status });
 
             const buyerNotificationRef = doc(collection(db, 'notifications'));
@@ -190,8 +214,7 @@ export default function DashboardPage() {
             });
 
             if (status === 'Delivered' && orderDoc.data().status !== 'Delivered') {
-                const sellerDoc = await transaction.get(sellerRef);
-                const currentDeliveredCount = sellerDoc.data()?.deliveredOrderCount || 0;
+                const currentDeliveredCount = sellerDoc?.data()?.deliveredOrderCount || 0;
 
                 transaction.update(sellerRef, { deliveredOrderCount: increment(1) });
 

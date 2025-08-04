@@ -82,6 +82,7 @@ export default function DashboardPage() {
     const dishesQuery = query(collection(db, 'dishes'), where('sellerId', '==', user.id));
     const unsubscribeDishes = onSnapshot(dishesQuery, (snapshot) => {
       const dishesData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Dish[];
+ console.log('Fetched dishesData:', dishesData); // Log fetched dishes
       setSellerDishes(dishesData);
     });
 
@@ -138,6 +139,7 @@ export default function DashboardPage() {
   // Filter dishes based on search
   const filteredDishes = sellerDishes.filter(dish =>
     searchTerm === '' || dish.name.toLowerCase().includes(searchTerm.toLowerCase())
+
   );
   
   const salesData = deliveredOrders.reduce((acc, order) => {
@@ -170,6 +172,8 @@ export default function DashboardPage() {
       acc.push({ month, sales: sellerItemsTotal });
     }
     return acc;
+
+
   }, [] as { month: string; sales: number }[]).reverse();
 
 
@@ -526,6 +530,10 @@ export default function DashboardPage() {
                                         <TableBody>
                                             {filteredDishes.map(dish => {
                                                 const isAvailable = dish.isAvailable ?? true;
+                                                const isDiscount = dish.originalPrice !== undefined && dish.originalPrice > dish.price;
+                                                const discountPercentage = isDiscount
+                                                    ? Math.round(((dish.originalPrice! - dish.price) / dish.originalPrice!) * 100)
+                                                    : 0;
                                                 return (
                                                     <TableRow key={dish.id}>
                                                         <TableCell>
@@ -562,7 +570,12 @@ export default function DashboardPage() {
                                                             </div>
                                                         </TableCell>
                                                         <TableCell>
-                                                            <span className="font-semibold">৳{dish.price.toFixed(2)}</span>
+                                                            <div className="flex items-center gap-2">
+                                                                <span className="font-semibold">৳{dish.price.toFixed(2)}</span>
+                                                                {isDiscount && (
+                                                                    <Badge variant="destructive" className="text-xs font-bold">{discountPercentage}% OFF</Badge>
+                                                                )}
+                                                            </div>
                                                         </TableCell>
                                                         <TableCell>
                                                             <DropdownMenu>
@@ -615,6 +628,10 @@ export default function DashboardPage() {
                                 <div className="md:hidden space-y-4">
                                     {filteredDishes.map(dish => {
                                         const isAvailable = dish.isAvailable ?? true;
+                                        const isDiscount = dish.originalPrice !== undefined && dish.originalPrice > dish.price;
+                                        const discountPercentage = isDiscount
+                                            ? Math.round(((dish.originalPrice! - dish.price) / dish.originalPrice!) * 100)
+                                            : 0;
                                         return (
                                             <Card key={dish.id} className="p-4">
                                                 <div className="flex gap-4">
@@ -630,7 +647,12 @@ export default function DashboardPage() {
                                                             <div>
                                                                 <h3 className="font-semibold">{dish.name}</h3>
                                                                 <p className="text-sm text-muted-foreground">{dish.category}</p>
-                                                                <p className="font-semibold text-lg">৳{dish.price.toFixed(2)}</p>
+                                                                <div className="flex items-center gap-2 text-lg">
+                                                                    <span className="font-semibold">৳{dish.price.toFixed(2)}</span>
+                                                                    {isDiscount && (
+                                                                        <Badge variant="destructive" className="text-xs font-bold">{discountPercentage}% OFF</Badge>
+                                                                    )}
+                                                                </div>
                                                             </div>
                                                             <DropdownMenu>
                                                                 <DropdownMenuTrigger asChild>

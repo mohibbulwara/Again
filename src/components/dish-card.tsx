@@ -67,7 +67,7 @@ export default function DishCard({ dish }: DishCardProps) { // Removed React.mem
           )}
           {isDiscount && (
             <Badge variant="destructive" className="absolute top-3 right-3 text-sm font-bold shadow-lg pulse-glow animate-bounce">
- % OFF
+ {discountPercentage}% OFF
             </Badge>)} {/* Moved closing Badge tag */}
         </div> {/* Moved closing div tag */}
       </Link>

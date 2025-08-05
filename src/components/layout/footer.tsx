@@ -16,7 +16,7 @@ export default function Footer() {
             <div className="flex flex-col items-center md:items-start">
                  <Link href="/" className="mb-4 flex items-center space-x-2">
                     <CookingPot className="h-8 w-8 text-primary" />
-                    <span className="font-bold font-headline text-2xl text-primary tracking-wide">{t('appName')}</span>
+                    <span className="font-bold font-headline text-2xl text-primary tracking-wide">Aharian</span>
                 </Link>
                 <p className="text-sm text-muted-foreground max-w-xs">{t('heroSubtitle')}</p>
                 <div className="flex gap-4 mt-6">
@@ -49,7 +49,7 @@ export default function Footer() {
             </div>
         </div>
         <div className="mt-12 border-t pt-8 text-center text-sm text-muted-foreground">
-  &copy; {new Date().getFullYear()} {t('appName')}. All rights reserved. <br />
+  &copy; 2025 Aharian. All rights reserved. <br />
   Developed by <a 
     href="https://www.facebook.com/mohibbulorjon/" 
     target="_blank" 

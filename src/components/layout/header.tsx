@@ -100,7 +100,7 @@ export default function Header() {
         <div className="mr-auto">
           <Link href="/" className="flex items-center space-x-2 group">
             <CookingPot className="h-8 w-8 text-primary transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" />
-            <span className="font-bold font-headline text-xl tracking-wide bg-gradient-to-r from-primary to-pink-500 text-transparent bg-clip-text">{t('appName')}</span>
+            <span className="font-bold font-headline text-xl tracking-wide bg-gradient-to-r from-primary to-pink-500 text-transparent bg-clip-text">Aharian</span>
           </Link>
         </div>
 

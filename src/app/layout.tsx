@@ -9,11 +9,11 @@ import { ThemeProvider } from '@/components/theme-provider';
 import ClientLayout from '@/components/client-layout';
 
 export const metadata: Metadata = {
-  title: "Chefs' BD - Authentic Flavors Delivered",
+  title: "Aharian - Authentic Flavors Delivered",
   description: 'Discover authentic flavors from local chefs, delivered fresh to your door. Experience culinary excellence with our curated selection of dishes.',
   keywords: 'food delivery, authentic cuisine, local chefs, fresh meals, culinary experience',
-  authors: [{ name: "Chefs' BD Team" }],
-  creator: "Chefs' BD",
+  authors: [{ name: "Aharian Team" }],
+  creator: "Aharian",
   publisher: "Chefs' BD",
   formatDetection: {
     email: false,

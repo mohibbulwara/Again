@@ -1,7 +1,7 @@
 export const translations = {
   en: {
     appName: "Chefs' BD",
-    tagline: "Authentic flavors, delivered to your door.",
+    tagline: "Authentic flavors, delivered to your door.", // Add a comma here
     browseProducts: "Browse Products",
     login: "Login",
     register: "Register",
@@ -25,7 +25,7 @@ export const translations = {
     previousOrders: "Previous Orders",
   },
   bn: {
-    appName: "শেফস বিডি",
+    appName: "আহারিয়ান",
     tagline: "খাঁটি স্বাদ, আপনার দোরগোড়ায় পৌঁছে দেওয়া হয়।",
     browseProducts: "পণ্য ব্রাউজ করুন",
     login: "লগইন",

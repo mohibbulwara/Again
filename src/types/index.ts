@@ -58,7 +58,7 @@ export interface User {
   onWatchlist?: boolean;
 }
 
-export interface CartItem extends Dish {
+export interface CartItem extends Product {
   quantity: number;
 }
 

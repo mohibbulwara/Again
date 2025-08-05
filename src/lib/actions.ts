@@ -28,7 +28,7 @@ export async function uploadImage(formData: FormData) {
     const result = await new Promise<{ secure_url: string; public_id: string; }>((resolve, reject) => {
         cloudinary.uploader.upload_stream({ folder: "chefs-bd" }, (error, result) => {
             if (error) {
-                // Return the actual error from Cloudinary
+                // Return the actual error from Cloudinary            reject(error);
                 reject(error);
                 return;
             }

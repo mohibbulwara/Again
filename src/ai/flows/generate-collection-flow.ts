@@ -26,7 +26,7 @@ const prompt = ai.definePrompt({
   name: 'generateCollectionPrompt',
   output: { schema: GenerateCollectionOutputSchema },
   model: 'googleai/gemini-2.0-flash',
-  prompt: `You are a creative food curator for an online marketplace in Bangladesh called "Chefs' BD". 
+  prompt: `You are a creative food curator for an online marketplace in Bangladesh called "Aharian". 
 Your task is to create a themed collection of food based on the current list of available product categories.
 
 Consider factors like the time of day, weather, or current events in Bangladesh to come up with a creative theme.

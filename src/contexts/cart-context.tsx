@@ -22,7 +22,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     setIsMounted(true);
     try {
-      const storedCart = localStorage.getItem('chefs-bd-cart');
+      const storedCart = localStorage.getItem('aharian-cart');
       if (storedCart) {
         setCart(JSON.parse(storedCart));
       }
@@ -33,7 +33,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (isMounted) {
-      localStorage.setItem('chefs-bd-cart', JSON.stringify(cart));
+      localStorage.setItem('aharian-cart', JSON.stringify(cart));
     }
   }, [cart, isMounted]);
 

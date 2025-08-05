@@ -7,7 +7,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyCfqpsCxS2dkmQUaKDHAd7EWS6-ixCL4EE",
   authDomain: "chefs-bd.firebaseapp.com",
   projectId: "chefs-bd",
-  storageBucket: "chefs-bd.appspot.com",
+  storageBucket: "chefs-bd.firebasestorage.app",
   messagingSenderId: "715801468404",
   appId: "1:715801468404:web:cd31745ac650c715db2da1"
 };

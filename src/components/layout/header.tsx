@@ -101,11 +101,15 @@ export default function Header() {
           <Link href="/" className="flex items-center space-x-2 group">
             <CookingPot className="h-8 w-8 text-primary transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" />
             <span
-  className="text-xl sm:text-2xl font-semibold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-pink-400 drop-shadow-[1px_1px_2px_rgba(0,0,0,0.4)] transform transition-all duration-300 hover:scale-105 hover:-rotate-1"
+  className="text-lg sm:text-2xl font-semibold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-pink-400 drop-shadow-[1px_1px_2px_rgba(0,0,0,0.4)] transform transition-all duration-300 hover:scale-105 hover:-rotate-1"
   style={{ fontFamily: "'Unica One', cursive" }}
 >
   Aharian
 </span>
+
+
+
+
 
           </Link>
         </div>

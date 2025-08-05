@@ -24,13 +24,12 @@ export default function HeroSection() {
           <div className="rounded-lg p-4 mx-auto max-w-4xl patterned-background">
             {/* Combined and improved headline with gradient and icon */}
             <h1 className="font-headline text-3xl font-extrabold md:text-5xl bg-gradient-to-r from-primary to-blue-400 text-transparent bg-clip-text pb-2 inline-block">
-               <UtensilsCrossed className="h-6 w-6 md:h-8 md:w-8 text-primary inline-block mr-4 mb-2" />
-              Savor the Taste of TRADITION
-            </h1>
+ <UtensilsCrossed className="h-6 w-6 md:h-8 md:w-8 text-primary inline-block mr-4 mb-2" />
+ Aharian: Where Every Bite Tells a Story.
+ </h1>
             
             <p className="mx-auto mt-4 max-w-[500px] text-muted-foreground md:text-lg leading-relaxed">
-              Experience the best of local cuisine, made with passion and delivered with care. Your next favorite meal is just a click away.
-            </p>
+ Discover authentic local flavors, crafted with passion and delivered to your door. Your next favorite meal awaits.            </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">

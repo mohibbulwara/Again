@@ -25,7 +25,7 @@ export default function HeroSection() {
             {/* Combined and improved headline with gradient and icon */}
             <h1 className="font-headline text-3xl font-extrabold md:text-5xl bg-gradient-to-r from-primary to-blue-400 text-transparent bg-clip-text pb-2 inline-block">
  <UtensilsCrossed className="h-6 w-6 md:h-8 md:w-8 text-primary inline-block mr-4 mb-2" />
- Aharian: Where Every Bite Tells a Story.
+ Aharian: Taste That Lingers, Memories That Last.
  </h1>
             
             <p className="mx-auto mt-4 max-w-[500px] text-muted-foreground md:text-lg leading-relaxed">

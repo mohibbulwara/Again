@@ -45,6 +45,11 @@ function AllDishesContent({ dishes, selectedCategory }: AllDishesProps) {
   }, [searchParams]);
 
   useEffect(() => {
+    // Scroll to top of the page when currentPage changes
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+
+  useEffect(() => {
     // This effect runs on the client to fetch all sellers
     async function fetchSellers() {
         const sellers = await getAllSellers();

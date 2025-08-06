@@ -88,26 +88,30 @@ export default function OrdersPage() {
               </CardHeader>
               <CardContent>
                 <div className="divide-y">
-                  {order.items.map(item => (
-                    <div key={item.id} className="flex items-center justify-between py-3">
-                      <div className="flex items-center gap-4">
-                        <Image
-                          src={item.images[0]}
-                          alt={item.name}
-                          width={64}
-                          height={64}
-                          className="rounded-md object-cover"
-                        />
-                        <div>
-                          <p className="font-semibold">{item.name}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {item.quantity} x ৳{item.price.toFixed(2)}
+ {Array.isArray(order.items) && order.items.length > 0 ? (
+ order.items.map(item => (
+ <div key={item.id} className="flex items-center justify-between py-3">
+ <div className="flex items-center gap-4">
+ <Image
+                          src={item.image}
+ alt={item.name}
+ width={64}
+ height={64}
+ className="rounded-md object-cover"
+ />
+ <div>
+ <p className="font-semibold">{item.name}</p>
+ <p className="text-sm text-muted-foreground">
+ {item.quantity} x ৳{item.price.toFixed(2)}
                           </p>
                         </div>
                       </div>
-                      <p className="font-semibold">৳{(item.quantity * item.price).toFixed(2)}</p>
-                    </div>
-                  ))}
+ <p className="font-semibold">৳{(item.quantity * item.price).toFixed(2)}</p>
+ </div>
+ ))
+ ) : (
+ <p className="text-muted-foreground text-sm italic">No items found for this order.</p>
+ )}
                 </div>
               </CardContent>
               <CardFooter className="flex justify-end bg-muted/50 p-4">

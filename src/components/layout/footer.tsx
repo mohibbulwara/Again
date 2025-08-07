@@ -21,8 +21,8 @@ export default function Footer() {
                 <p className="text-sm text-muted-foreground max-w-xs">{t('heroSubtitle')}</p>
                 <div className="flex gap-4 mt-6">
                     <motion.a href="#" whileHover={{ scale: 1.2, color: 'hsl(var(--primary))' }} className="text-muted-foreground"><Twitter /></motion.a>
-                    <motion.a href="#" whileHover={{ scale: 1.2, color: 'hsl(var(--primary))' }} className="text-muted-foreground"><Instagram /></motion.a>
-                    <motion.a href="#" whileHover={{ scale: 1.2, color: 'hsl(var(--primary))' }} className="text-muted-foreground"><Facebook /></motion.a>
+ <motion.a href="https://www.instagram.com/aharian.official/" target="_blank" whileHover={{ scale: 1.2, color: 'hsl(var(--primary))' }} className="text-muted-foreground"><Instagram /></motion.a>
+ <motion.a href="https://www.facebook.com/aharian.official/" target="_blank" whileHover={{ scale: 1.2, color: 'hsl(var(--primary))' }} className="text-muted-foreground"><Facebook /></motion.a>
                 </div>
             </div>
             <div>

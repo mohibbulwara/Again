@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useAuth } from '@/lib/hooks';
 import type { Order } from '@/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -74,7 +75,6 @@ export default function OrdersPage() {
       <div className="space-y-6">
         {userOrders.length > 0 ? (
           userOrders.map(order => (
-            console.log(order.items),
             <Card key={order.id} className={order.status === 'Cancelled' ? 'bg-muted/30' : ''}>
               <CardHeader className="flex flex-row justify-between items-start">
                 <div>
@@ -101,7 +101,9 @@ export default function OrdersPage() {
  className="rounded-md object-cover"
  />
  <div>
- <p className="font-semibold">{item.name}</p>
+ <Link href={`/dish/${item.id}`} passHref>
+ <p className="font-semibold hover:underline">{item.name}</p>
+ </Link>
  <p className="text-sm text-muted-foreground">
  {item.quantity} x ৳{item.price.toFixed(2)}
                           </p>

@@ -160,7 +160,9 @@ export default function DishDetailClient({ dish, seller, relatedDishes }: DishDe
               ))}
             </div>
           )}
-          <h1 className="font-headline text-4xl md:text-5xl font-bold">{dish.name}</h1>
+          <Link href={`/dish/${dish.id}`}>
+            <h1 className="font-headline text-4xl md:text-5xl font-bold hover:text-primary transition-colors">{dish.name}</h1>
+          </Link>
           <div className="mt-4 flex items-center gap-4">
              <RatingStars rating={averageRating} />
              <span className="text-sm text-muted-foreground">{averageRating.toFixed(1)} / 5 ({reviews.length} reviews)</span>

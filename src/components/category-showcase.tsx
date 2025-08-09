@@ -3,69 +3,20 @@
 
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
-import {
-  Pizza,
-  UtensilsCrossed,
-  Flame,
-  LayoutGrid,
-  Utensils,
-  Soup,
-  Salad,
-  CakeSlice,
-  CupSoda,
-  CookingPot,
-  Wheat,
-  Voicemail,
-  Fish,
-  Vegan,
-  Sandwich,
-  Coffee,
-  IceCream,
-  Popcorn,
-  Grid as GridIcon // Renamed LayoutGrid import to avoid conflict
-} from 'lucide-react';
-import type { ComponentType } from 'react';
-
-interface Category {
-  name: string;
-  hint: string; 
-}
+import Image from 'next/image';
+import { categoryData } from '@/lib/category-data';
+import { Grid as GridIcon } from 'lucide-react';
 
 interface CategoryShowcaseProps {
-  categories: Category[];
   onSelectCategory: (category: string | null) => void;
   selectedCategory?: string | null;
 }
 
-const iconMap: { [key: string]: ComponentType<{ className?: string }> } = {
-  Burger: Utensils,
-  Pizza: Pizza,
-  Biryani: UtensilsCrossed,
-  Kebab: Flame,
-  'Set Menu': LayoutGrid,
-  Pasta: Utensils,
-  Soup: Soup,
-  Salad: Salad,
-  Dessert: CakeSlice,
-  Drinks: CupSoda,
-  Curry: CookingPot,
-  Rice: Wheat,
-  Noodles: Voicemail,
-  Seafood: Fish,
-  Vegetarian: Vegan,
-  Sandwich: Sandwich,
-  Breakfast: Coffee,
-  Appetizers: Popcorn,
-  Coffee: Coffee,
-  'Ice Cream': IceCream,
-};
-
-export default function CategoryShowcase({ categories, onSelectCategory, selectedCategory }: CategoryShowcaseProps) {
+export default function CategoryShowcase({ onSelectCategory, selectedCategory }: CategoryShowcaseProps) {
   const handleCategoryClick = (e: React.MouseEvent, categoryName: string) => {
-    e.preventDefault(); // Prevent navigation
+    e.preventDefault();
     onSelectCategory(categoryName);
     
-    // Smooth scroll to the dishes section
     setTimeout(() => {
       const dishesSection = document.getElementById('dishes-section');
       if (dishesSection) {
@@ -74,7 +25,7 @@ export default function CategoryShowcase({ categories, onSelectCategory, selecte
           block: 'start'
         });
       }
-    }, 100); // Small delay to ensure state update
+    }, 100);
   }
 
   return (
@@ -101,8 +52,7 @@ export default function CategoryShowcase({ categories, onSelectCategory, selecte
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-          {categories.map((category) => {
-             const Icon = iconMap[category.name] || Utensils;
+          {categoryData.map((category) => {
              const isSelected = selectedCategory === category.name;
              return (
              <div key={category.name}>
@@ -111,18 +61,21 @@ export default function CategoryShowcase({ categories, onSelectCategory, selecte
                 onClick={(e) => handleCategoryClick(e, category.name)}
                 className="group block h-full"
               >
-                <Card className={`h-full overflow-hidden text-center transition-all duration-200 hover:border-primary/50 hover:shadow-lg hover:-translate-y-1 ${
-                  isSelected ? 'border-primary shadow-lg ring-2 ring-primary/20' : ''
+                <Card className={`h-full overflow-hidden text-center transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl ${
+                  isSelected ? 'border-primary shadow-lg ring-2 ring-primary/20' : 'border-border'
                 }`}>
-                    <div className={`p-6 flex items-center justify-center transition-colors duration-200 hover:bg-primary/10 ${
-                      isSelected ? 'bg-primary/10' : 'bg-muted/40'
-                    }`}>
-                        <Icon className={`h-12 w-12 transition-all duration-200 hover:text-primary hover:scale-105 ${
-                          isSelected ? 'text-primary scale-105' : 'text-muted-foreground'
-                        }`} />
+                    <div className="relative h-40 w-full overflow-hidden">
+                      <Image
+                        src={category.imageUrl}
+                        alt={category.name}
+                        layout="fill"
+                        objectFit="cover"
+                        className="transition-transform duration-300 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
                     </div>
                     <div className="p-4 bg-card">
-                        <h3 className={`font-headline text-xl font-bold transition-colors duration-200 hover:text-primary ${
+                        <h3 className={`font-headline text-xl font-bold transition-colors duration-200 ${
                           isSelected ? 'text-primary' : 'text-foreground'
                         }`}>{category.name}</h3>
                     </div>

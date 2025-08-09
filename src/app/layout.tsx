@@ -8,6 +8,8 @@ import NextTopLoader from 'nextjs-toploader';
 import { ThemeProvider } from '@/components/theme-provider';
 import ClientLayout from '@/components/client-layout';
 
+const iconUrl = 'https://res.cloudinary.com/drewes4b7/image/upload/v1754780008/Logo_of_Aharian_cropped_utilon.png';
+
 export const metadata: Metadata = {
   title: "Aharian - Authentic Flavors Delivered",
   description: 'Discover authentic flavors from local chefs, delivered fresh to your door. Experience culinary excellence with our curated selection of dishes.',
@@ -22,12 +24,17 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: '32x32', type: 'image/x-icon' },
-      { url: '/favicon.svg', sizes: 'any', type: 'image/svg+xml' },
+      { url: iconUrl, sizes: '32x32', type: 'image/png' },
+      { url: iconUrl, sizes: '48x48', type: 'image/png' },
+      { url: iconUrl, sizes: '192x192', type: 'image/png' },
+      { url: iconUrl, sizes: '512x512', type: 'image/png' },
     ],
     apple: [
-      { url: '/favicon.svg', sizes: '180x180', type: 'image/svg+xml' },
+      { url: iconUrl, sizes: '180x180', type: 'image/png' },
     ],
+    shortcut: [
+      { url: iconUrl, type: 'image/png' },
+    ]
   },
   manifest: '/site.webmanifest',
   robots: {

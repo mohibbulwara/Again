@@ -237,23 +237,7 @@ export default function DishDetailClient({ dish, seller, relatedDishes }: DishDe
       
       <Separator className="my-16" />
 
-      {relatedDishes.length > 0 && (
-        <div className="mb-16">
-          <h2 className="font-headline text-3xl font-bold mb-8 text-center">Related Dishes</h2>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {relatedDishes.map((p) => ( <DishCard key={p.id} dish={p} /> ))}
-          </div>
-        </div>
-      )}
-
-      {seller?.shopAddress && (
-        <div className="mb-16">
-            <h2 className="font-headline text-3xl font-bold mb-8 text-center">Seller Location</h2>
-            <MapCard address={seller.shopAddress} />
-        </div>
-      )}
-
-       <div className="grid md:grid-cols-3 gap-12">
+      <div className="grid md:grid-cols-3 gap-12">
         <div className="md:col-span-2">
             <Card>
                 <CardHeader><CardTitle>Leave a Review</CardTitle></CardHeader>
@@ -291,6 +275,22 @@ export default function DishDetailClient({ dish, seller, relatedDishes }: DishDe
              </div>
         </div>
       </div>
+
+      {relatedDishes.length > 0 && (
+        <div className="mt-16">
+          <h2 className="font-headline text-3xl font-bold mb-8 text-center">Related Dishes</h2>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {relatedDishes.map((p) => ( <DishCard key={p.id} dish={p} /> ))}
+          </div>
+        </div>
+      )}
+
+      {seller?.shopAddress && (
+        <div className="mt-16">
+            <h2 className="font-headline text-3xl font-bold mb-8 text-center">Seller Location</h2>
+            <MapCard address={seller.shopAddress} />
+        </div>
+      )}
     </motion.div>
   );
 }

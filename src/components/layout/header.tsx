@@ -87,7 +87,7 @@ export default function Header() {
   };
   
   const getNotificationLink = (notification: Notification) => {
-      if (notification.type === 'order-status' && notification.orderId) return '/orders';
+      if (notification.type === 'order-status' && notification.orderId) return '/myorders';
       if (notification.type === 'new-product' && notification.dishId) return `/dish/${notification.dishId}`;
       if (notification.type === 'new-order' && user?.role === 'seller') return '/dashboard';
       if (notification.type === 'account-activated' && user?.role === 'seller') return '/dashboard';

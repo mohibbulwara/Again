@@ -8,7 +8,7 @@ import NextTopLoader from 'nextjs-toploader';
 import { ThemeProvider } from '@/components/theme-provider';
 import ClientLayout from '@/components/client-layout';
 
-const iconUrl = 'https://res.cloudinary.com/drewes4b7/image/upload/v1754780008/Logo_of_Aharian_cropped_utilon.png';
+const iconUrl = 'https://res.cloudinary.com/drewes4b7/image/upload/v1754783345/Untitled_design_hzm7wn.png';
 
 export const metadata: Metadata = {
   title: "Aharian - Authentic Flavors Delivered",
@@ -26,7 +26,9 @@ export const metadata: Metadata = {
     icon: [
       { url: iconUrl, sizes: '32x32', type: 'image/png' },
       { url: iconUrl, sizes: '48x48', type: 'image/png' },
+      { url: iconUrl, sizes: '128x128', type: 'image/png' },
       { url: iconUrl, sizes: '192x192', type: 'image/png' },
+      { url: iconUrl, sizes: '256x256', type: 'image/png' },
       { url: iconUrl, sizes: '512x512', type: 'image/png' },
     ],
     apple: [

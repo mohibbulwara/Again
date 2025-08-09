@@ -40,4 +40,44 @@ export const categoryData = [
     name: 'Drinks',
     imageUrl: 'https://res.cloudinary.com/drewes4b7/image/upload/v1754782474/images_vrwstv.jpg',
   },
+  {
+    name: 'Curry',
+    imageUrl: 'https://res.cloudinary.com/drewes4b7/image/upload/v1754782692/images_litcgg.jpg',
+  },
+  {
+    name: 'Rice',
+    imageUrl: 'https://res.cloudinary.com/drewes4b7/image/upload/v1754782735/Arroz-a-la-Primavera-500x375_qyi3hg.jpg',
+  },
+  {
+    name: 'Noodles',
+    imageUrl: 'https://res.cloudinary.com/drewes4b7/image/upload/v1754782777/images_kmhdi4.jpg',
+  },
+  {
+    name: 'Seafood',
+    imageUrl: 'https://res.cloudinary.com/drewes4b7/image/upload/v1754782810/shutterstock_1773695441-min-750x750_dna0xg.jpg',
+  },
+  {
+    name: 'Vegetarian',
+    imageUrl: 'https://res.cloudinary.com/drewes4b7/image/upload/v1754782840/images_wngy5x.jpg',
+  },
+  {
+    name: 'Sandwich',
+    imageUrl: 'https://res.cloudinary.com/drewes4b7/image/upload/v1754782884/7siQNckVFg_ldke71.jpg',
+  },
+  {
+    name: 'Breakfast',
+    imageUrl: 'https://res.cloudinary.com/drewes4b7/image/upload/v1754782924/Lumberjack-Breakfast2_m2paag.jpg',
+  },
+  {
+    name: 'Appetizers',
+    imageUrl: 'https://res.cloudinary.com/drewes4b7/image/upload/v1754782957/images_bfmvfs.jpg',
+  },
+  {
+    name: 'Coffee',
+    imageUrl: 'https://res.cloudinary.com/drewes4b7/image/upload/v1754782980/stock-of-mix-a-cup-coffee-latte-more-motive-top-view-foodgraphy-generative-ai-photo_lyiq97.jpg',
+  },
+  {
+    name: 'Ice Cream',
+    imageUrl: 'https://res.cloudinary.com/drewes4b7/image/upload/v1754783018/images_m0uuis.jpg',
+  },
 ];

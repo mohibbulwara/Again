@@ -51,22 +51,11 @@ export default function CartPage() {
   const [deliveryZone, setDeliveryZone] = useState<DeliveryZone | undefined>();
 
   const shippingCost = useMemo(() => {
-    // This is a simplified calculation. A real-world scenario would be more complex,
-    // potentially involving fetching seller data here. For now, we use a default.
     if (!deliveryZone || cart.length === 0) return 0;
-    return 60; // Default shipping cost
+    return 60;
   }, [cart, deliveryZone]);
-  
-  const platformFee = useMemo(() => {
-    return cart.reduce((totalFee, item) => {
-        const itemTotal = item.price * item.quantity;
-        const commission = item.commissionPercentage || 5; // Default to 5% if not set
-        return totalFee + (itemTotal * (commission / 100));
-    }, 0);
-  }, [cart]);
 
   const finalTotal = cartTotal + shippingCost;
-  const sellerReceives = cartTotal - platformFee;
 
   const isCheckoutDisabled = !address || !contact || !deliveryZone || isLoading || cart.length === 0;
 
@@ -88,15 +77,12 @@ export default function CartPage() {
         contact: contact,
         shippingCost: shippingCost,
         deliveryZone: deliveryZone,
-        platformFee: platformFee,
       };
 
-      // Create the order document
       const orderRef = await addDoc(collection(db, 'orders'), orderData);
       
       const batch = writeBatch(db);
 
-      // Create notifications for each seller
       for (const sellerId of sellerIds) {
           const seller = await getUserById(sellerId);
           const notificationRef = doc(collection(db, 'notifications'));
@@ -110,7 +96,6 @@ export default function CartPage() {
           });
       }
 
-      // Create a notification for the buyer
       const buyerNotificationRef = doc(collection(db, 'notifications'));
       batch.set(buyerNotificationRef, {
           userId: user.id,
@@ -213,14 +198,6 @@ export default function CartPage() {
                      <div className="flex justify-between">
                         <span>Shipping</span>
                         <span>৳{shippingCost.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between text-destructive">
-                        <span>Platform Fee ({platformFee.toFixed(2)})</span>
-                        <span>- ৳{platformFee.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between font-semibold">
-                        <span>Seller will receive</span>
-                        <span>৳{sellerReceives.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between font-bold text-lg border-t pt-4 mt-2">
                         <span>Total</span>

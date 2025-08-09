@@ -5,22 +5,27 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/lib/hooks';
-import type { Order } from '@/types';
+import type { Order, Dish } from '@/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
 import { format } from 'date-fns';
 import { db } from '@/firebase';
-import { collection, query, where, onSnapshot, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, doc, getDoc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { CancelOrderButton } from '@/components/cancel-order-button';
+import { getDishById } from '@/lib/services/dish-service';
+
+interface DetailedOrder extends Omit<Order, 'items'> {
+  items: (Dish & { quantity: number })[];
+}
 
 export default function OrdersPage() {
   const { user, isAuthenticated, loading } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
-  const [userOrders, setUserOrders] = useState<Order[]>([]);
+  const [userOrders, setUserOrders] = useState<DetailedOrder[]>([]);
 
   useEffect(() => {
     if (loading) return;
@@ -34,20 +39,40 @@ export default function OrdersPage() {
       where('buyerId', '==', user.id)
     );
 
-    const unsubscribe = onSnapshot(ordersQuery, (snapshot) => {
-      const orders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Order));
-      orders.sort((a, b) => {
+    const unsubscribe = onSnapshot(ordersQuery, async (snapshot) => {
+      const ordersPromises = snapshot.docs.map(async (docSnap) => {
+        const orderData = { id: docSnap.id, ...docSnap.data() } as Order;
+        
+        const detailedItems = await Promise.all(
+          orderData.items.map(async (item) => {
+            const dish = await getDishById(item.id);
+            return { 
+              ...dish, 
+              ...item,
+              // Fallback for older orders that might not have the full dish data
+              name: dish?.name || item.name,
+              images: dish?.images || [item.image || ''],
+             };
+          })
+        );
+        return { ...orderData, items: detailedItems };
+      });
+
+      const detailedOrders = await Promise.all(ordersPromises);
+
+      detailedOrders.sort((a, b) => {
         const timeA = a.createdAt ? (a.createdAt as any).toMillis() : 0;
         const timeB = b.createdAt ? (b.createdAt as any).toMillis() : 0;
         return timeB - timeA;
       });
-      setUserOrders(orders);
+      
+      setUserOrders(detailedOrders as DetailedOrder[]);
     });
 
     return () => unsubscribe();
   }, [user, isAuthenticated, loading, router]);
 
-  const handleCancelOrder = (order: Order) => {
+  const handleCancelOrder = (order: DetailedOrder) => {
     if (order.items && order.items.length > 0) {
       const dishId = order.items[0].id;
       router.push(`/dish/${dishId}`);
@@ -103,7 +128,7 @@ export default function OrdersPage() {
                       <div key={item.id} className="flex items-center justify-between py-3">
                         <div className="flex items-center gap-4">
                           <Image
-                            src={item.image}
+                            src={item.images?.[0] || 'https://placehold.co/64x64.png'}
                             alt={item.name}
                             width={64}
                             height={64}

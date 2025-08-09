@@ -74,6 +74,7 @@ export default function OrdersPage() {
       <div className="space-y-6">
         {userOrders.length > 0 ? (
           userOrders.map(order => (
+            console.log(order.items),
             <Card key={order.id} className={order.status === 'Cancelled' ? 'bg-muted/30' : ''}>
               <CardHeader className="flex flex-row justify-between items-start">
                 <div>

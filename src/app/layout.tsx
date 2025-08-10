@@ -8,7 +8,8 @@ import NextTopLoader from 'nextjs-toploader';
 import { ThemeProvider } from '@/components/theme-provider';
 import ClientLayout from '@/components/client-layout';
 
-const iconUrl = 'https://res.cloudinary.com/drewes4b7/image/upload/v1754783345/Untitled_design_hzm7wn.png';
+// Add a cache-busting parameter to the icon URL
+const iconUrl = 'https://res.cloudinary.com/drewes4b7/image/upload/v1754783345/Untitled_design_hzm7wn.png?v=1';
 
 export const metadata: Metadata = {
   title: "Aharian - Authentic Flavors Delivered",

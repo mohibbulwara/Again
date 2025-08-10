@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   formatDetection: {
     email: false,
     address: false,
-    telephone: false,
+    telephone: false, 
   },
   icons: {
     icon: [

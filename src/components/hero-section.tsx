@@ -5,7 +5,6 @@ import { useLanguage } from '@/lib/hooks';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { UtensilsCrossed } from 'lucide-react';
 
 export default function HeroSection() {
   const { t } = useLanguage();
@@ -14,7 +13,7 @@ export default function HeroSection() {
   const mobileImageUrl = 'https://res.cloudinary.com/drewes4b7/image/upload/v1754781321/2_ikufug.png';
 
   return (
-    <section className="relative w-full min-h-[70vh] flex items-center justify-center overflow-hidden">
+    <section className="relative w-full min-h-[85vh] flex items-start md:items-center justify-center md:justify-end overflow-hidden">
       {/* Background image for desktop (hidden on mobile) */}
       <div
         className="absolute inset-0 z-0 hidden md:block bg-cover bg-center bg-no-repeat"
@@ -30,28 +29,22 @@ export default function HeroSection() {
         }}
       ></div>
 
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/60 z-0"></div>
+      {/* Dark overlay for desktop only */}
+      <div className="absolute inset-0 bg-black/30 z-0 hidden md:block"></div>
 
-      <div className="container mx-auto grid grid-cols-1 items-center py-8 md:py-12 text-center relative z-10">
-        <div className="relative">
-          <div className="rounded-lg p-4 mx-auto max-w-4xl">
-            <h1 className="font-headline text-3xl font-extrabold md:text-5xl bg-gradient-to-r from-primary to-blue-400 text-transparent bg-clip-text pb-2 inline-block">
-              <UtensilsCrossed className="h-6 w-6 md:h-8 md:w-8 text-primary inline-block mr-4 mb-2" />
-              Aharian: Taste That Lingers, Memories That Last.
-            </h1>
+      <div className="container mx-auto flex items-start md:items-center justify-center md:justify-end h-full relative z-10 p-4">
+        {/* Container for the content */}
+        <div className="md:bg-black/30 md:border md:border-white/10 rounded-2xl p-4 md:p-8 max-w-md w-full">
+          <div className="flex flex-col items-center justify-center text-center gap-4">
+            <p className="text-xs md:text-lg text-white font-semibold" style={{ textShadow: '1px 1px 4px rgba(0,0,0,0.5)' }}>Ready to explore?</p>
             
-            <p className="mx-auto mt-4 max-w-[500px] text-white/80 md:text-lg leading-relaxed">
-              Discover authentic local flavors, crafted with passion and delivered to your door. Your next favorite meal awaits.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
+            <div className="flex flex-col md:flex-row gap-2 w-full">
               <Button
                 asChild
-                size="lg"
-                className="px-6 py-5 text-base font-semibold bg-primary hover:bg-primary/90 transition-colors duration-200"
+                size="sm"
+                className="flex-1 px-4 py-2 text-xs md:px-8 md:py-6 md:text-lg font-semibold bg-primary hover:bg-primary/90 transition-transform hover:scale-105"
               >
-                <Link href="/dishes" className="flex items-center gap-2">
+                <Link href="/dishes" className="flex items-center justify-center gap-2">
                   Explore Dishes
                   <ArrowRight className="w-4 h-4" />
                 </Link>
@@ -60,8 +53,9 @@ export default function HeroSection() {
               <Button
                 asChild
                 variant="outline"
-                size="lg"
-                className="px-6 py-5 text-base font-semibold border-white/50 text-white hover:bg-white/10 transition-colors duration-200"
+                size="sm"
+                // Hidden on screens smaller than md, flex-1 on md and above
+                className="max-md:hidden md:flex-1 px-4 py-2 text-xs md:px-8 md:py-6 md:text-lg font-semibold border-white/50 text-white hover:bg-white/10 transition-transform hover:scale-105"
               >
                 <Link href="/sellers">
                   Meet Our Chefs
@@ -69,18 +63,18 @@ export default function HeroSection() {
               </Button>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 mt-8 pt-6 border-t border-white/20">
+            <div className="grid grid-cols-3 gap-2 pt-4 border-t border-white/20 w-full">
               <div className="text-center">
-                <div className="text-xl md:text-2xl font-bold text-primary">500+</div>
-                <div className="text-xs text-white/70">Happy Customers</div>
+                <div className="text-sm md:text-3xl font-bold text-primary">500+</div>
+                <div className="text-xs text-white/80">Customers</div>
               </div>
               <div className="text-center">
-                <div className="text-xl md:text-2xl font-bold text-primary">50+</div>
-                <div className="text-xs text-white/70">Expert Chefs</div>
+                <div className="text-sm md:text-3xl font-bold text-primary">50+</div>
+                <div className="text-xs text-white/80">Chefs</div>
               </div>
               <div className="text-center">
-                <div className="text-xl md:text-2xl font-bold text-primary">1000+</div>
-                <div className="text-xs text-white/70">Dishes Served</div>
+                <div className="text-sm md:text-3xl font-bold text-primary">1000+</div>
+                <div className="text-xs text-white/80">Dishes</div>
               </div>
             </div>
           </div>

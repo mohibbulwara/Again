@@ -10,7 +10,7 @@ export default function HeroSection() {
   const { t } = useLanguage();
 
   const desktopImageUrl = 'https://res.cloudinary.com/drewes4b7/image/upload/v1754780415/ss_aj7w6f.png';
-  const mobileImageUrl = 'https://res.cloudinary.com/drewes4b7/image/upload/v1754781321/2_ikufug.png';
+  const mobileImageUrl = 'https://res.cloudinary.com/drewes4b7/image/upload/v1754785535/2_s3e5c1.png';
 
   return (
     <section className="relative w-full min-h-[85vh] flex items-start md:items-center justify-center md:justify-end overflow-hidden">

@@ -30,7 +30,13 @@ const DishDetailSkeleton = () => (
     </div>
 );
 
-async function DishDetailData({ id }: { id: string }) {
+async function DishDetailData({ slug }: { slug: string }) {
+    const id = slug.split('-').pop();
+    
+    if (!id) {
+        notFound();
+    }
+
     // Increment view count. We don't need to wait for it.
     incrementDishViewCount(id);
 
@@ -53,10 +59,10 @@ async function DishDetailData({ id }: { id: string }) {
 }
 
 
-export default function DishDetailPage({ params }: { params: { id: string } }) {
+export default function DishDetailPage({ params }: { params: { slug: string } }) {
     return (
         <Suspense fallback={<DishDetailSkeleton />}>
-            <DishDetailData id={params.id} />
+            <DishDetailData slug={params.slug} />
         </Suspense>
     );
 }

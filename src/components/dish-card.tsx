@@ -17,12 +17,17 @@ interface DishCardProps {
   dish: Dish;
 }
 
-export default function DishCard({ dish }: DishCardProps) { // Removed React.memo as it's not needed with simple props
+export default function DishCard({ dish }: DishCardProps) { 
   const { addToCart } = useCart();
   const { t } = useLanguage();
 
   const [isLiked, setIsLiked] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+
+  const createSlug = (name, id) => {
+    const formattedName = name.toLowerCase().replace(/\s+/g, '-');
+    return `${formattedName}-${id}`;
+  };
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -40,24 +45,24 @@ export default function DishCard({ dish }: DishCardProps) { // Removed React.mem
   const isDiscount = dish.originalPrice && dish.originalPrice > dish.price;
   const discountPercentage = isDiscount ? Math.round(((dish.originalPrice! - dish.price) / dish.originalPrice!) * 100) : 0;
   const mainImage = dish.images?.[0] || 'https://placehold.co/600x400.png';
+  const slug = createSlug(dish.name, dish.id);
 
   return (
     <Card
-      className="group relative overflow-hidden rounded-xl border-border/20 transition-all duration-300 h-full flex flex-col card-hover hover:border-primary/50 hover:shadow-xl" // Simplified className
+      className="group relative overflow-hidden rounded-xl border-border/20 transition-all duration-300 h-full flex flex-col card-hover hover:border-primary/50 hover:shadow-xl"
     >
-      <Link href={`/dish/${dish.id}`} className="block">
+      <Link href={`/dish/${slug}`} className="block">
         <div className="overflow-hidden aspect-[4/3] relative">
           <Image
             src={mainImage}
             alt={dish.name}
             width={600}
             height={400}
-            className="h-full w-full object-cover transition-all duration-500 group-hover:scale-105" // Simplified animation
+            className="h-full w-full object-cover transition-all duration-500 group-hover:scale-105"
             data-ai-hint={`${dish.category}`}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-opacity duration-300 group-hover:from-black/40" />
           
-          {/* Shimmer Effect (simplified) */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
           
            {!isAvailable && (
@@ -68,8 +73,8 @@ export default function DishCard({ dish }: DishCardProps) { // Removed React.mem
           {isDiscount && (
             <Badge variant="destructive" className="absolute top-3 right-3 text-sm font-bold shadow-lg pulse-glow animate-bounce">
  {discountPercentage}% OFF
-            </Badge>)} {/* Moved closing Badge tag */}
-        </div> {/* Moved closing div tag */}
+            </Badge>)}
+        </div>
       </Link>
       <div className="p-5 space-y-4 flex flex-col flex-grow bg-gradient-to-b from-transparent to-background/50">
         <div className="flex-grow">
@@ -80,7 +85,7 @@ export default function DishCard({ dish }: DishCardProps) { // Removed React.mem
                   key={tag}
                   variant="secondary"
                   className="text-xs glass-effect hover:bg-primary/20 transition-all duration-300 hover:scale-105"
-                  style={{ animationDelay: `${index * 50}ms` }} // Reduced animation delay
+                  style={{ animationDelay: `${index * 50}ms` }}
                 >
                   {tag}
                 </Badge>
@@ -89,7 +94,7 @@ export default function DishCard({ dish }: DishCardProps) { // Removed React.mem
           )}
           <h3 className="font-headline text-lg font-bold leading-tight text-foreground mb-2">
             <Link
-              href={`/dish/${dish.id}`}
+              href={`/dish/${slug}`}
               className="hover:text-primary transition-all duration-300 bg-gradient-to-r from-foreground to-foreground hover:from-primary hover:to-pink-500 bg-clip-text hover:text-transparent"
             >
               {dish.name}
@@ -101,7 +106,7 @@ export default function DishCard({ dish }: DishCardProps) { // Removed React.mem
         </div>
         
         <div className="flex items-center justify-between text-sm">
-          <div className="flex items-center gap-1 text-xs text-muted-foreground"> {/* Removed RatingStars div */}
+          <div className="flex items-center gap-1 text-xs text-muted-foreground">
              <Clock className="h-3 w-3" />
              <span className="font-medium">{dish.deliveryTime}</span>
           </div>
@@ -119,7 +124,7 @@ export default function DishCard({ dish }: DishCardProps) { // Removed React.mem
               )}
           </div>
            <Button
-              onClick={handleAddToCart} // Added onClick handler
+              onClick={handleAddToCart}
               size="sm"
               disabled={!isAvailable}
               className="modern-button transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"

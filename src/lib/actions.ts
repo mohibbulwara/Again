@@ -1,6 +1,3 @@
-
-'use server';
-
 import { v2 as cloudinary } from 'cloudinary';
 import { addDoc, collection, serverTimestamp, doc, runTransaction, updateDoc, writeBatch, increment } from 'firebase/firestore';
 import { db } from '@/firebase';
@@ -78,7 +75,7 @@ export async function addDish(dishData: any, userId: string) {
                 rating: Math.floor(Math.random() * 3) + 3,
                 createdAt: serverTimestamp(),
                 isAvailable: true,
-                approvalStatus: 'approved', // Dishes are auto-approved for now
+                approvalStatus: 'approved',
                 viewCount: 0,
             });
 
@@ -129,9 +126,11 @@ export async function updateDish(dishId: string, dishData: Partial<Dish>) {
         if (dishData.approvalStatus !== undefined) dataToUpdate.approvalStatus = dishData.approvalStatus;
         if (dishData.approvalReason !== undefined) dataToUpdate.approvalReason = dishData.approvalReason;
 
+          // --- DEBUGGING: Log the data before sending to Firestore ---
+        console.log("Data to update in Firestore:", dataToUpdate);
         await updateDoc(dishRef, dataToUpdate);
         return { success: true };
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error updating dish: ", error);
         return { error: "Failed to update dish." };
     }
@@ -173,5 +172,3 @@ export async function incrementDishViewCount(dishId: string) {
     console.error("Failed to increment dish view count for dish " + dishId, error);
   }
 }
-
-

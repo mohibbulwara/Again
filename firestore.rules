@@ -3,37 +3,43 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Users can read their own user document
-    // Users can be created by anyone (for registration)
-    match /users/{userId} {
-      allow read: if request.auth != null && request.auth.uid == userId;
-      allow create: if request.auth != null;
-      allow update: if request.auth != null && request.auth.uid == userId;
-    }
-
-    // Products can be read by anyone
-    // Products can be created, updated, or deleted only by authenticated sellers
-    match /products/{productId} {
+    // 1. DISHES: Publicly readable by anyone.
+    // Writable only by authenticated sellers.
+    match /dishes/{dishId} {
       allow read: if true;
       allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'seller';
     }
 
-    // Buyers can create orders
-    // Buyers can read their own orders
-    // Sellers can read orders that contain their products
+    // 2. USERS: This is the critical fix.
+    match /users/{userId} {
+      // A user can read, create, and update THEIR OWN document.
+      // This rule is what fixes the "permission-denied" error for logged-in users.
+      allow read, update: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null;
+
+      // ANYONE can view the profile if the user is a seller.
+      // This allows the public to see seller pages.
+      allow get: if get(/databases/$(database)/documents/users/$(userId)).data.role == 'seller';
+    }
+    
+    // 3. ORDERS: Only accessible by the buyer or sellers involved.
     match /orders/{orderId} {
       allow create: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'buyer';
-      allow read: if request.auth != null &&
-                  (resource.data.buyerId == request.auth.uid ||
+      allow read: if request.auth != null && 
+                  (resource.data.buyerId == request.auth.uid || 
                    request.auth.uid in resource.data.sellerIds);
     }
 
-    // Sellers can read their own notifications
-    // Sellers can update their own notifications (e.g., mark as read)
-    // Notifications are created by a Cloud Function (implicitly trusted) or server-side logic, so we restrict direct client creation.
+    // 4. NOTIFICATIONS: Only accessible by the seller it belongs to.
     match /notifications/{notificationId} {
         allow read, update: if request.auth != null && resource.data.sellerId == request.auth.uid;
-        allow create: if false; // Should be handled by backend logic/functions
+        allow create: if false; // Should be handled by backend
+    }
+    
+    // 5. PRODUCTS (Legacy or alternative collection)
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'seller';
     }
   }
 }

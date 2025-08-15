@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 export default function HeroSection() {
   const { t } = useLanguage();
 
-  const desktopImageUrl = 'https://res.cloudinary.com/drewes4b7/image/upload/v1754780415/ss_aj7w6f.png';
+  const desktopImageUrl = 'https://res.cloudinary.com/drewes4b7/image/upload/v1755286555/Black_and_Orange_Restaurant_Fast_Food_Facebook_Cover_yqv3o6.png';
   const mobileImageUrl = 'https://res.cloudinary.com/drewes4b7/image/upload/v1754857554/ddddd_rc5uvc.png';
 
   const textShadowStyle = { textShadow: '1px 1px 4px rgba(0, 0, 0, 0.7)' };

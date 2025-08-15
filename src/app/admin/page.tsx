@@ -5,6 +5,9 @@ import AdminDashboardClient from './admin-dashboard-client';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 
+// --- FIX: Prevent build-time pre-rendering for this secure page ---
+export const dynamic = 'force-dynamic';
+
 const AdminPageSkeleton = () => (
     <div className="container mx-auto py-8 space-y-8">
         <Skeleton className="h-10 w-1/4" />

@@ -38,8 +38,8 @@ export default function Header() {
 
   const navLinks = [
     { href: '/', label: t('home') },
-    { href: '/products', label: t('products') },
     { href: '/sellers', label: 'Sellers' },
+    { href: '/myorders', label: 'My Orders' },  
   ];
 
   useEffect(() => {
@@ -105,21 +105,34 @@ export default function Header() {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex flex-1 items-center justify-center gap-2">
-          {navLinks.map((link) => {
-            const isActive = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`relative rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-primary ${
-                  isActive ? 'text-primary bg-muted' : 'text-muted-foreground'
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </nav>
+  {navLinks.map((link) => {
+    const isActive = pathname === link.href;
+    return (
+      <Link
+        key={link.href}
+        href={link.href}
+        className={`relative rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-primary ${
+          isActive ? 'text-primary bg-muted' : 'text-muted-foreground'
+        }`}
+      >
+        {link.label}
+      </Link>
+    );
+  })}
+
+  {/* ✅ Show Dashboard only for Sellers */}
+  {user?.role === 'seller' && (
+    <Link
+      href="/dashboard"
+      className={`relative rounded-md px-3 py-2 text-sm font-medium transition-colors hover:text-primary ${
+        pathname === '/dashboard' ? 'text-primary bg-muted' : 'text-muted-foreground'
+      }`}
+    >
+      Dashboard
+    </Link>
+  )}
+</nav>
+
         
         <div className="flex items-center gap-1 md:gap-2 ml-auto">
           

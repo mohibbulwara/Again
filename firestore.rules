@@ -19,6 +19,12 @@ service cloud.firestore {
       allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'seller';
     }
 
+    // Dishes can be read by anyone (assuming a separate 'dishes' collection)
+    match /dishes/{dishId} {
+       allow read: if true; // Allow anyone to read dishes (for admin dashboard prerendering)
+       // Add write rules for dishes if they are different from products
+    }
+
     // Buyers can create orders
     // Buyers can read their own orders
     // Sellers can read orders that contain their products

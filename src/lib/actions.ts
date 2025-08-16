@@ -21,7 +21,7 @@ export async function uploadImage(formData: FormData) {
   try {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = new Uint8Array(arrayBuffer);
-    
+
     const result = await new Promise<{ secure_url: string; public_id: string; }>((resolve, reject) => {
         cloudinary.uploader.upload_stream({ folder: "chefs-bd" }, (error, result) => {
             if (error) {
@@ -49,13 +49,13 @@ export async function addDish(dishData: any, userId: string) {
 
     try {
         const userRef = doc(db, "users", userId);
-        
+
         const { newDishId, sellerData } = await runTransaction(db, async (transaction) => {
             const userDoc = await transaction.get(userRef);
             if (!userDoc.exists()) {
                 throw "User does not exist!";
             }
-            
+
             const userData = userDoc.data() as User;
             const currentUploads = userData.productUploadCount || 0;
 
@@ -83,7 +83,7 @@ export async function addDish(dishData: any, userId: string) {
 
             return { newDishId: dishDocRef.id, sellerData: userData };
         });
-        
+
         const buyers = await getAllBuyers();
         const notificationBatch = writeBatch(db);
         buyers.forEach(buyer => {
@@ -132,7 +132,8 @@ export async function updateDish(dishId: string, dishData: Partial<Dish>) {
         return { success: true };
     } catch (error: any) {
         console.error("Error updating dish: ", error);
-        return { error: "Failed to update dish." };
+        // Modified to return the actual error message
+        return { error: error.message || "Failed to update dish." };
     }
 }
 
@@ -168,7 +169,7 @@ export async function incrementDishViewCount(dishId: string) {
       viewCount: increment(1)
     });
   } catch (error) {
-    // Log the error but don't block the user from seeing the page.
+    // Log the error but don\'t block the user from seeing the page.
     console.error("Failed to increment dish view count for dish " + dishId, error);
   }
 }

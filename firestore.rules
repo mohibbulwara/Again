@@ -14,15 +14,15 @@ service cloud.firestore
 
     // Products can be read by anyone
     // Products can be created, updated, or deleted only by authenticated sellers
-    match /products/{productId} {
-      allow read: if true; // Already allowed
-      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'seller';
+    match /products/{productId} { 
+      allow read: if true;
+      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'seller'; 
     }
 
-    // Dishes can be read by anyone (assuming a separate 'dishes' collection)
+    // Dishes can be read by anyone (used in admin dashboard)
     match /dishes/{dishId} {
-       allow read: if true; // Allow anyone to read dishes (for admin dashboard prerendering)
-       // Add write rules for dishes if they are different from products
+       allow read: if true || (request.auth != null && request.auth.uid == resource.data.sellerId);
+       allow write: if request.auth != null && request.auth.uid == resource.data.sellerId && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'seller'; // Added check for sellerId
     }
 
     // Buyers can create orders
@@ -30,7 +30,6 @@ service cloud.firestore
     // Sellers can read orders that contain their products
     match /orders/{orderId} {
       allow create: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'buyer'; // Corrected: removed resource.data
-      // You might want to add more specific read rules for authenticated users
       allow read: if true; // Allow anyone to read orders (for admin dashboard prerendering)
     }
 
@@ -43,8 +42,8 @@ service cloud.firestore
     // Sellers can read their own notifications
     // Sellers can update their own notifications (e.g., mark as read)
     // Notifications are created by a Cloud Function (implicitly trusted) or server-side logic, so we restrict direct client creation.
-    match /notifications/{notificationId} {
-        allow read, update: if request.auth != null && resource.data.sellerId == request.auth.uid;
+ match /notifications/{notificationId} {
+ allow read, update: if request.auth != null && resource.data.userId == request.auth.uid; // Changed sellerId to userId
         allow create: if false; // Should be handled by backend logic/functions
     }
   }

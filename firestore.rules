@@ -14,8 +14,10 @@ service cloud.firestore {
     // Write access should be carefully controlled for sellers.
     match /products/{productId} {
       allow read: if true; // Allow public read access for prerendering and display
-      // Add write rule if products are also managed by sellers, similar to dishes
-      // For example: allow create: if request.auth != null && request.auth.uid == request.resource.data.sellerId;
+      // The write rule below allows sellers to create/update/delete any product.
+      // If you want to restrict sellers to *only their own* products,
+      // you would need to add a sellerId field to products and use:
+      // allow create: if request.auth != null && request.auth.uid == request.resource.data.sellerId;
       // allow update, delete: if request.auth != null && request.auth.uid == resource.data.sellerId;
       allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'seller';
     }

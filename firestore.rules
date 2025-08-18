@@ -1,22 +1,30 @@
-
 rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-
     // Users can read their own user document
     // Users can be created by anyone (for registration)
     match /users/{userId} {
-      allow read: if request.auth != null && request.auth.uid == userId;
+      allow read: if true; // Allow anyone to read users (for admin dashboard prerendering)
       allow create: if request.auth != null;
       allow update: if request.auth != null && request.auth.uid == userId;
     }
 
-    // Products can be read by anyone
-    // Products can be created, updated, or deleted only by authenticated sellers
+    // Products can be read by anyone (crucial for prerendering and public display)
+    // Write access should be carefully controlled for sellers.
     match /products/{productId} {
-      allow read: if true;
+      allow read: if true; // Allow public read access for prerendering and display
+      // Add write rule if products are also managed by sellers, similar to dishes
+      // For example: allow create: if request.auth != null && request.auth.uid == request.resource.data.sellerId;
+      // allow update, delete: if request.auth != null && request.auth.uid == resource.data.sellerId;
       allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'seller';
+    }
+
+    // Dishes can be read by anyone (used in admin dashboard)
+    match /dishes/{dishId} {
+       allow read: if true;
+       allow create: if request.auth != null && request.auth.uid == request.resource.data.sellerId;
+       allow update, delete: if request.auth != null && request.auth.uid == resource.data.sellerId; // Corrected: using resource.data for existing document
     }
 
     // Buyers can create orders
@@ -24,16 +32,20 @@ service cloud.firestore {
     // Sellers can read orders that contain their products
     match /orders/{orderId} {
       allow create: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'buyer';
-      allow read: if request.auth != null && 
-                  (resource.data.buyerId == request.auth.uid || 
-                   request.auth.uid in resource.data.sellerIds);
+      allow read: if true; // Allow anyone to read orders (for admin dashboard prerendering)
     }
 
+    // Admin Audit Logs can be read by anyone (for admin dashboard prerendering)
+    // Write access should be restricted to backend logic
+    match /admin_logs/{logId} {
+        allow read: if true;
+        allow write: if false; // Should be handled by backend logic/functions
+    }
     // Sellers can read their own notifications
     // Sellers can update their own notifications (e.g., mark as read)
     // Notifications are created by a Cloud Function (implicitly trusted) or server-side logic, so we restrict direct client creation.
     match /notifications/{notificationId} {
-        allow read, update: if request.auth != null && resource.data.sellerId == request.auth.uid;
+        allow read, update: if request.auth != null && resource.data.userId == request.auth.uid;
         allow create: if false; // Should be handled by backend logic/functions
     }
   }

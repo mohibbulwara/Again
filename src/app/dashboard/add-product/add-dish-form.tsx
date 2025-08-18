@@ -22,7 +22,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { categories } from '@/lib/data';
 
-const categoryNames = categories.map(c => c.name) as [string, ...string[]];
+const categoryNames = categories.map(c => c.name) as ['Burger', 'Pizza', 'Drinks', 'Dessert', 'Biryani', 'Kebab', 'Set Menu', 'Pasta', 'Soup', 'Salad', 'Curry', 'Rice', 'Noodles', 'Seafood', 'Vegetarian', 'Sandwich', 'Breakfast', 'Appetizers', 'Coffee', 'Ice Cream'];
 const availableTags = ['Best Value', 'Spicy', 'New'] as const;
 
 const MAX_IMAGES = 4;

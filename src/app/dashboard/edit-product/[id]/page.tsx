@@ -25,7 +25,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { categories } from '@/lib/data';
 
-const categoryNames = categories.map(c => c.name) as [string, ...string[]];
+const categoryNames = categories.map(c => c.name) as ['Burger', 'Pizza', 'Drinks', 'Dessert', 'Biryani', 'Kebab', 'Set Menu', 'Pasta', 'Soup', 'Salad', 'Curry', 'Rice', 'Noodles', 'Seafood', 'Vegetarian', 'Sandwich', 'Breakfast', 'Appetizers', 'Coffee', 'Ice Cream'];
 const availableTags = ['Best Value', 'Spicy', 'New'] as const;
 
 const MAX_IMAGES = 4;
@@ -187,8 +187,12 @@ export default function EditProductPage() {
           })
         );
 
-        const dishData = { ...data, images: imageUrls };
-        const result = await updateDish(dish.id, dishData);
+        const dishData = {
+          ...data,
+          images: imageUrls,
+          category: data.category as 'Burger' | 'Pizza' | 'Drinks' | 'Dessert' | 'Biryani' | 'Kebab' | 'Set Menu' | 'Pasta' | 'Soup' | 'Salad' | 'Curry' | 'Rice' | 'Noodles' | 'Seafood' | 'Vegetarian' | 'Sandwich' | 'Breakfast' | 'Appetizers' | 'Coffee' | 'Ice Cream'
+        };
+        const result = await updateDish(dish.id, dishData, user.id);
 
         if (result.error) {
           throw new Error(result.error);

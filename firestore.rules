@@ -20,8 +20,8 @@ service cloud.firestore {
     // Dishes can be read by anyone (used in admin dashboard, public pages)
     match /dishes/{dishId} {
        allow read: if true; // Explicitly allow public read access
-       allow create: if request.auth != null && request.auth.uid == request.resource.data.sellerId;
-       allow update, delete: if request.auth != null && request.auth.uid == resource.data.sellerId; 
+       allow create: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'seller';
+       allow update, delete: if request.auth != null && request.auth.uid == resource.data.sellerId;
     }
 
     // Buyers can create orders

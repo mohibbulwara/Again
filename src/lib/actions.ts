@@ -110,30 +110,41 @@ export async function addDish(dishData: any, userId: string) {
     }
 }
 
-export async function updateDish(dishId: string, dishData: Partial<Dish>) {
+export async function updateDish(dishId: string, dishData: Partial<Dish>, userId: string) {
     const dishRef = doc(db, "dishes", dishId);
 
     try {
-        const dataToUpdate: Record<string, any> = {};
+        await runTransaction(db, async (transaction) => {
+            const dishDoc = await transaction.get(dishRef);
+            if (!dishDoc.exists()) {
+                throw new Error("Dish not found.");
+            }
+            const dish = dishDoc.data();
+            if (dish.sellerId !== userId) {
+                throw new Error("You are not authorized to update this dish.");
+            }
 
-        if (dishData.name !== undefined) dataToUpdate.name = dishData.name;
-        if (dishData.description !== undefined) dataToUpdate.description = dishData.description;
-        if (dishData.price !== undefined) dataToUpdate.price = Number(dishData.price);
-        if (dishData.originalPrice !== undefined) dataToUpdate.originalPrice = dishData.originalPrice ? Number(dishData.originalPrice) : null;
-        if (dishData.category !== undefined) dataToUpdate.category = dishData.category;
-        if (dishData.deliveryTime !== undefined) dataToUpdate.deliveryTime = dishData.deliveryTime;
-        if (dishData.images !== undefined) dataToUpdate.images = dishData.images;
-        if (dishData.commissionPercentage !== undefined) dataToUpdate.commissionPercentage = Number(dishData.commissionPercentage);
-        if (dishData.tags !== undefined) dataToUpdate.tags = dishData.tags;
-        if (dishData.isAvailable !== undefined) dataToUpdate.isAvailable = dishData.isAvailable;
-        if (dishData.approvalStatus !== undefined) dataToUpdate.approvalStatus = dishData.approvalStatus;
-        if (dishData.approvalReason !== undefined) dataToUpdate.approvalReason = dishData.approvalReason;
+            const dataToUpdate: Record<string, any> = {};
 
-        await updateDoc(dishRef, dataToUpdate);
+            if (dishData.name !== undefined) dataToUpdate.name = dishData.name;
+            if (dishData.description !== undefined) dataToUpdate.description = dishData.description;
+            if (dishData.price !== undefined) dataToUpdate.price = Number(dishData.price);
+            if (dishData.originalPrice !== undefined) dataToUpdate.originalPrice = dishData.originalPrice ? Number(dishData.originalPrice) : null;
+            if (dishData.category !== undefined) dataToUpdate.category = dishData.category;
+            if (dishData.deliveryTime !== undefined) dataToUpdate.deliveryTime = dishData.deliveryTime;
+            if (dishData.images !== undefined) dataToUpdate.images = dishData.images;
+            if (dishData.commissionPercentage !== undefined) dataToUpdate.commissionPercentage = Number(dishData.commissionPercentage);
+            if (dishData.tags !== undefined) dataToUpdate.tags = dishData.tags;
+            if (dishData.isAvailable !== undefined) dataToUpdate.isAvailable = dishData.isAvailable;
+            if (dishData.approvalStatus !== undefined) dataToUpdate.approvalStatus = dishData.approvalStatus;
+            if (dishData.approvalReason !== undefined) dataToUpdate.approvalReason = dishData.approvalReason;
+
+            transaction.update(dishRef, dataToUpdate);
+        });
         return { success: true };
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error updating dish: ", error);
-        return { error: "Failed to update dish." };
+        return { error: error.message || "Failed to update dish." };
     }
 }
 
@@ -173,5 +184,4 @@ export async function incrementDishViewCount(dishId: string) {
     console.error("Failed to increment dish view count for dish " + dishId, error);
   }
 }
-
 

@@ -266,7 +266,11 @@ export default function DashboardPage() {
 
   const handleAvailabilityChange = async (dishId: string, isAvailable: boolean) => {
     try {
-      const result = await updateDish(dishId, { isAvailable });
+      if (!user) {
+        toast({ title: 'Error', description: 'User not authenticated.', variant: 'destructive' });
+        return;
+      }
+      const result = await updateDish(dishId, { isAvailable }, user.id);
       if (result.error) {
         throw new Error(result.error);
       }

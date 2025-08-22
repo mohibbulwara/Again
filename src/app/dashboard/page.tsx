@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/dialog"
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
 import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
-import { format } from 'date-fns';
+import { format, isValid } from 'date-fns';
 import { db } from '@/firebase';
 import { collection, query, where, onSnapshot, doc, updateDoc, writeBatch, serverTimestamp, deleteDoc, runTransaction, increment } from 'firebase/firestore';
 import { getUserById } from '@/lib/services/user-service';
@@ -322,6 +322,19 @@ export default function DashboardPage() {
         case 'Cancelled': return <XCircle className="h-4 w-4 text-red-500" />;
         default: return null;
     }
+  };
+
+  const formatOrderTime = (timestamp: any) => {
+    let date;
+    if (timestamp && typeof timestamp === 'object' && 'toDate' in timestamp) {
+      date = (timestamp as any).toDate();
+    } else if (timestamp instanceof Date) {
+      date = timestamp;
+    }
+    if (date && isValid(date)) {
+      return format(date, 'MMM d, yyyy HH:mm');
+    }
+    return 'N/A';
   };
 
   return (
@@ -800,6 +813,7 @@ export default function DashboardPage() {
                                                 <TableHead>Buyer</TableHead>
                                                 <TableHead>Items</TableHead>
                                                 <TableHead>Status</TableHead>
+ <TableHead>Time</TableHead>
                                                 <TableHead>Total</TableHead>
                                                 <TableHead className="w-[70px]">Actions</TableHead>
                                             </TableRow>
@@ -838,6 +852,9 @@ export default function DashboardPage() {
                                                                 <OrderStatusIcon status={order.status} />
                                                                 {order.status}
                                                             </Badge>
+                                                        </TableCell>
+                                                        <TableCell className="text-sm text-muted-foreground">
+                                                            {formatOrderTime(order.createdAt)}
                                                         </TableCell>
                                                         <TableCell>
                                                             <span className="font-semibold">৳{orderTotal.toFixed(2)}</span>
@@ -963,6 +980,8 @@ export default function DashboardPage() {
                                                                 {order.status}
                                                             </Badge>
                                                             <Dialog>
+                                                                 <span className="text-xs text-muted-foreground mt-1 block md:hidden">\n                                                                    {formatOrderTime(order.createdAt)}\n                                                                </span>
+
                                                                 <DropdownMenu>
                                                                     <DropdownMenuTrigger asChild>
                                                                         <Button variant="ghost" size="icon" disabled={isUpdating === order.id}>

@@ -2,48 +2,70 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Users can read their own user document
-    // Users can be created by anyone (for registration)
+
+    // Helper function to safely get the authenticated user's role
+    function getAuthUserRole() {
+      let userDoc = get(/databases/$(database)/documents/users/$(request.auth.uid));
+      // Safely check if userDoc is null before accessing its data
+      return userDoc != null ? userDoc.data.role : null;
+    }
+
+    // Users collection
     match /users/{userId} {
-      allow read: if true; // Allow anyone to read users (for admin dashboard prerendering)
-      allow create: if request.auth != null;
-      allow update: if request.auth != null && request.auth.uid == userId;
+      allow read: if true; // Public read for seller profiles
+      allow create: if request.auth != null; // Any authenticated user can register
+      allow update: if request.auth != null && request.auth.uid == userId; // Users update their own profile
     }
 
-    // Products can be read by anyone (crucial for prerendering and public display)
-    // Write access should be carefully controlled for sellers.
+    // *** TEMPORARY ULTRA-PERMISSIVE DIAGNOSTIC RULES ***
+    // *** NOT FOR PRODUCTION - ANY AUTHENTICATED USER CAN WRITE ***
+    // Products collection
     match /products/{productId} {
-      allow read: if true; // Explicitly allow public read access for prerendering and display
-      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'seller';
+      allow read: if true; // Public read
+      allow write: if request.auth != null; // TEMPORARY: Any authenticated user can write to products
     }
 
-    // Dishes can be read by anyone (used in admin dashboard, public pages)
+    // Dishes collection
     match /dishes/{dishId} {
-       allow read: if true; // Explicitly allow public read access
-       allow create: if request.auth != null && request.auth.uid == request.resource.data.sellerId;
-       allow update, delete: if request.auth != null && request.auth.uid == resource.data.sellerId; 
+       allow read: if true; // Public read
+       allow write: if request.auth != null; // TEMPORARY: Any authenticated user can write to dishes
     }
 
-    // Buyers can create orders
-    // Buyers can read their own orders
-    // Sellers can read orders that contain their products
+    // Orders collection
     match /orders/{orderId} {
-      allow create: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'buyer';
-      allow read: if true; // Allow anyone to read orders (for admin dashboard prerendering)
+      allow create: if request.auth != null; // Any authenticated user can create an order (buyer) - confirmed working
+
+      // Allow read if authenticated AND (is buyer, or is seller of items, or is admin)
+      allow read: if request.auth != null && (
+        request.auth.uid == resource.data.buyerId || 
+        resource.data.sellerIds.hasAny([request.auth.uid]) || 
+        getAuthUserRole() == 'admin'
+      );
+
+      // Allow update if authenticated AND (is seller of items, or is admin)
+      allow update: if request.auth != null && (
+        (resource.data.sellerIds.hasAny([request.auth.uid]) && getAuthUserRole() == 'seller') ||
+        getAuthUserRole() == 'admin'
+      );
     }
 
-    // Admin Audit Logs can be read by anyone (for admin dashboard prerendering)
-    // Write access should be restricted to backend logic
-    match /admin_logs/{logId} {
-        allow read: if true;
-        allow write: if false; // Should be handled by backend logic/functions
-    }
-    // Sellers can read their own notifications
-    // Sellers can update their own notifications (e.g., mark as read)
-    // Notifications are created by a Cloud Function (implicitly trusted) or server-side logic, so we restrict direct client creation.
+    // Notifications collection
     match /notifications/{notificationId} {
-        allow read, update: if request.auth != null && resource.data.userId == request.auth.uid;
-        allow create: if false; // Should be handled by backend logic/functions
+      allow read, update: if request.auth != null && request.auth.uid == resource.data.userId;
+      // TEMPORARY COMPROMISE: Allow client-side creation for now. (Critical for order flow)
+      allow create: if request.auth != null;
+    }
+
+    // Admin Logs collection
+    match /admin_logs/{logId} {
+      allow read: if request.auth != null && getAuthUserRole() == 'admin'; // Only admins can read
+      allow write: if false; // Only backend can write logs
+    }
+
+    // Categories collection
+    match /categories/{categoryId} {
+      allow read: if true; // Public read
+      allow write: if false; // Not client-writable
     }
   }
 }

@@ -2,6 +2,7 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getMessaging } from "firebase/messaging";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCfqpsCxS2dkmQUaKDHAd7EWS6-ixCL4EE",
@@ -19,4 +20,8 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
-export { db, auth, googleProvider };
+// Initialize Firebase Cloud Messaging and get a reference to the service
+const messaging = typeof window !== 'undefined' ? getMessaging(app) : null;
+
+
+export { db, auth, googleProvider, messaging };

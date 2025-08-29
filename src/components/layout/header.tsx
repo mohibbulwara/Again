@@ -35,6 +35,7 @@ export default function Header() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [originalTitle, setOriginalTitle] = useState('Aharian - Authentic Flavors Delivered');
 
   const navLinks = [
     { href: '/', label: t('home') },
@@ -42,6 +43,29 @@ export default function Header() {
     { href: '/dishes', label: 'All Dishes' },
     ...(isAuthenticated && user?.role === 'buyer' ? [{ href: '/myorders', label: 'My Orders' }] : []),
   ];
+
+  useEffect(() => {
+    // Store the original title when the component mounts
+    if (typeof window !== 'undefined') {
+      setOriginalTitle(document.title);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (unreadCount > 0) {
+        document.title = `(${unreadCount}) ${originalTitle}`;
+      } else {
+        document.title = originalTitle;
+      }
+    }
+    // Cleanup function to reset the title when the component unmounts
+    return () => {
+        if(typeof window !== 'undefined'){
+            document.title = originalTitle;
+        }
+    };
+  }, [unreadCount, originalTitle]);
 
   useEffect(() => {
     if (!user) {

@@ -75,7 +75,7 @@ export async function addDish(dishData: any, userId: string) {
                 commissionPercentage: Number(commissionPercentage),
                 tags: tags || [],
                 sellerId: userId,
-                rating: Math.floor(Math.random() * 3) + 3,
+                rating: 0,
                 createdAt: serverTimestamp(),
                 isAvailable: true,
                 approvalStatus: 'approved', // Dishes are auto-approved for now

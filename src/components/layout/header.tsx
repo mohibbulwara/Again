@@ -158,7 +158,7 @@ export default function Header() {
                   <Button variant="ghost" size="icon" className="relative rounded-full p-2 transition-all duration-300 hover:bg-accent modern-button hover:scale-110">
                       <Bell className="h-5 w-5" />
                       {unreadCount > 0 && (
-                           <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 justify-center rounded-full p-0 text-xs border-2 border-background pulse-glow">
+                           <Badge variant="destructive" className="absolute -top-1 -right-1 h-5 w-5 justify-center rounded-full p-0 text-xs border-2 border-background pulse-glow notification-badge">
                               {unreadCount}
                            </Badge>
                       )}

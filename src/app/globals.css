@@ -141,3 +141,12 @@ html {
   outline-offset: 2px;
   border-radius: 4px;
 }
+.notification-badge {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}

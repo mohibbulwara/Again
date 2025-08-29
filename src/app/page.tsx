@@ -54,15 +54,35 @@ export default function HomePage() {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const [dishes, sellers] = await Promise.all([
-        getDishes(),
-        getAllSellers()
-      ]);
-      setAllDishesData(dishes);
-      setAllSellers(sellers);
-      setLoading(false);
+      try {
+        const [dishes, sellers] = await Promise.all([
+          getDishes(),
+          getAllSellers()
+        ]);
+        setAllDishesData(dishes);
+        setAllSellers(sellers);
+      } catch (error) {
+        console.error("Failed to fetch homepage data:", error);
+      } finally {
+        setLoading(false);
+      }
     }
+
     fetchData();
+
+    // This handles the case where the user navigates back to the page
+    // and the page is restored from the back-forward cache (bfcache).
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        fetchData();
+      }
+    };
+
+    window.addEventListener('pageshow', handlePageShow);
+
+    return () => {
+      window.removeEventListener('pageshow', handlePageShow);
+    };
   }, []);
   
   const featuredSellers = allSellers

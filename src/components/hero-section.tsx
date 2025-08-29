@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useLanguage } from '@/lib/hooks';
+import { useLanguage, useAuth } from '@/lib/hooks';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Instagram, Facebook } from 'lucide-react';
 import Link from 'next/link';
@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 
 export default function HeroSection() {
   const { t } = useLanguage();
+  const { isAuthenticated } = useAuth();
 
   const desktopImageUrl = 'https://res.cloudinary.com/drewes4b7/image/upload/v1754780415/ss_aj7w6f.png';
   const mobileImageUrl = 'https://res.cloudinary.com/drewes4b7/image/upload/v1754857554/ddddd_rc5uvc.png';
@@ -34,6 +35,7 @@ export default function HeroSection() {
           >
             <div className="p-8">
               {/* Login Area - Integrated into Main Box */}
+              {!isAuthenticated && (
               <div className="flex justify-center gap-4 w-full mb-6 pb-4 border-b border-white/10">
                 <Link href="/login" className="text-sm text-white/80 hover:text-primary transition-colors font-semibold">
                   Login as Buyer
@@ -43,6 +45,7 @@ export default function HeroSection() {
                   Login as Seller
                 </Link>
               </div>
+              )}
 
               <div className="text-center mb-6">
                 <p className="text-lg text-white font-semibold" style={textShadowStyle}>
@@ -98,6 +101,7 @@ export default function HeroSection() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="border border-white/10 rounded-2xl p-4">
+            {!isAuthenticated && (
             <div className="flex justify-center gap-4 w-full mb-4 pb-4 border-b border-white/10">
                 <Link href="/login" className="text-xs text-white/80 hover:text-primary transition-colors font-semibold">
                   Login as Buyer
@@ -107,6 +111,7 @@ export default function HeroSection() {
                   Login as Seller
                 </Link>
             </div>
+            )}
             <div className="grid grid-cols-3 gap-4 w-full mb-4">
               <div className="text-center"><div className="text-xl font-bold text-primary" style={textShadowStyle}>500+</div><div className="text-[0.65rem] text-white/70" style={textShadowStyle}>Customers</div></div>
               <div className="text-center"><div className="text-xl font-bold text-primary" style={textShadowStyle}>50+</div><div className="text-[0.65rem] text-white/70" style={textShadowStyle}>Expert Chefs</div></div>

@@ -22,7 +22,23 @@ const generatePdf = (title: string, head: any[], body: any[], filename: string) 
         body,
         startY: 30,
         theme: 'grid',
-        headStyles: { fillColor: [34, 34, 34] },
+        headStyles: { fillColor: [34, 34, 34], textColor: [255, 255, 255], fontStyle: 'bold' },
+        styles: { fontSize: 9, cellPadding: 3, overflow: 'linebreak' }, // Increased font size and padding
+        columnStyles: { // Explicitly set minCellWidth for better control
+            0: { minCellWidth: 20 }, // Order ID
+            1: { minCellWidth: 25 }, // Date
+            2: { minCellWidth: 25 }, // Buyer ID
+            3: { minCellWidth: 30 }, // Seller ID(s)
+            4: { minCellWidth: 30 }, // Seller Name(s)
+            5: { minCellWidth: 20 }, // Total (BDT)
+            6: { minCellWidth: 20 }, // Status
+        },
+        didParseCell: (data) => {
+            // Center align headers
+            if (data.section === 'head') {
+                data.cell.styles.halign = 'center';
+            }
+        },
       });
       
     
@@ -49,7 +65,7 @@ export const exportUsersToPDF = (users: User[]) => {
         user.createdAt ? format(new Date(user.createdAt as string), 'PP') : 'N/A'
     ]);
 
-    generatePdf('User List', tableHead, tableBody, 'chefs_bd_users');
+    generatePdf('User List', tableHead, tableBody, 'aharian_users');
 };
 
 
@@ -60,22 +76,28 @@ export const exportDishesToPDF = (dishes: Dish[]) => {
         dish.name,
         dish.category,
         dish.price.toFixed(2),
-        dish.sellerId.substring(0, 10) + '...'
+        dish.sellerId
     ]);
 
-    generatePdf('Dish List', tableHead, tableBody, 'chefs_bd_dishes');
+    generatePdf('Dish List', tableHead, tableBody, 'aharian_dishes');
 }
 
 // ---- Order Export ----
-export const exportOrdersToPDF = (orders: Order[]) => {
-    const tableHead = [['Order ID', 'Date', 'Total (BDT)', 'Status', 'Buyer ID']];
-    const tableBody = orders.map(order => [
-        order.id?.substring(0, 6),
-        order.createdAt ? format(new Date(order.createdAt as string), 'PP') : 'N/A',
-        order.total.toFixed(2),
-        order.status,
-        order.buyerId.substring(0, 10) + '...'
-    ]);
+export const exportOrdersToPDF = (orders: Order[], sellerNames: { [key: string]: string }, titleSuffix: string = 'All Orders') => {
+    const tableHead = [['Order ID', 'Date', 'Buyer ID', 'Seller ID(s)', 'Seller Name(s)', 'Total (BDT)', 'Status']];
+    const tableBody = orders.map(order => {
+        const sellerIds = order.sellerIds.map(id => id || 'N/A').join('\n'); // Ensure full IDs for sellers
+        const sellerNamesList = order.sellerIds.map(id => sellerNames[id] || 'Unknown Seller').join('\n'); // Change to 'Unknown Seller'
+        return [
+            order.id || 'N/A', // Display full Order ID
+            order.createdAt ? format(new Date(order.createdAt as string), 'PP') : 'N/A',
+            order.buyerId || 'N/A', // Display full Buyer ID
+            sellerIds,
+            sellerNamesList,
+            order.total.toFixed(2),
+            order.status,
+        ];
+    });
 
-    generatePdf('Order List', tableHead, tableBody, 'chefs_bd_orders');
+    generatePdf(`Order List - ${titleSuffix}`, tableHead, tableBody, 'aharian_orders');
 };

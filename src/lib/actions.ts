@@ -2,7 +2,7 @@
 'use server';
 
 import { v2 as cloudinary } from 'cloudinary';
-import { addDoc, collection, serverTimestamp, doc, runTransaction, updateDoc, writeBatch, increment } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp, doc, runTransaction, updateDoc, writeBatch, increment, deleteDoc } from 'firebase/firestore';
 import { db } from '@/firebase';
 import type { User, Dish } from '@/types';
 import { getAllBuyers } from './services/user-service';
@@ -185,3 +185,16 @@ export async function incrementDishViewCount(dishId: string) {
   }
 }
 
+export async function deleteOrder(orderId: string) {
+    if (!orderId) {
+        return { success: false, error: 'Order ID is required.' };
+    }
+
+    try {
+        await deleteDoc(doc(db, 'orders', orderId));
+        return { success: true };
+    } catch (error: any) {
+        console.error("Error deleting order: ", error);
+        return { success: false, error: `Failed to delete order: ${error.message || error}` };
+    }
+}
